@@ -2,17 +2,11 @@ package com.seminar2;
 
 public class Main {
     public static void main(String[] args) {
-        Product product = new Product();
+        Product product = new Product("Wireless Mouse", 19.99, 50, true, 'A');
 
-        product.name = "Wireless Mouse";
-        product.price = 19.99;
-        product.quantity = 50;
-        product.inStock = true;
-        product.grade = 'A';
-
-        System.out.println("Name: " + product.name);
-        System.out.println("Price: " + product.price);
-        System.out.println("Quantity: " + product.quantity);
+        System.out.println("Name: " + product.getName());
+        System.out.println("Price: " + product.getPrice());
+        System.out.println("Quantity: " + product.getQuantity());
         System.out.println("In stock: " + product.inStock);
         System.out.println("Grade: " + product.grade);
     }

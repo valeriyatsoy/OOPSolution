@@ -1,15 +1,23 @@
-# Exercise 1 -- Public Fields
+# Exercise 2 -- Private Fields, Getters, Constructors
 
-**Objective:** see how a class with plain public fields is created and used,
-before any encapsulation is introduced.
+**Objective:** hide some of `Product`'s fields and see why that forces you to
+set them through a constructor instead of the dot operator.
 
-**What's here:** `Product` with five public fields of different types
-(`name`, `price`, `quantity`, `inStock`, `grade`) and no methods. `Main`
-creates one `Product` with the no-argument constructor Java supplies
-automatically, sets each field with the dot operator, then prints them the
-same way.
+**What changed:**
+- `name`, `price` and `quantity` are now `private`; `inStock` and `grade`
+  stay `public`.
+- Added `getName()`, `getPrice()`, `getQuantity()`.
+- Added a no-argument constructor (sensible defaults) and a parameterised
+  constructor taking all five fields -- constructor overloading.
+- `Main` now builds its `Product` with the parameterised constructor and
+  reads the private fields through the getters.
 
-**Run it:** run `Main.main()` -- you should see the five values printed back.
+**Run it:** run `Main.main()` -- same five values print, but `Product`'s
+three private fields can no longer be reached with `product.name = ...;`
+from `Main`.
 
-**Next (Exercise 2):** `name`, `price` and `quantity` become `private`, with
-getters added -- and `product.name = ...;` style code stops compiling.
+**Discuss in tutorial:** try assigning `product.name` directly in `Main` --
+it no longer compiles. That's the point.
+
+**Next (Exercise 3):** setters with validation logic are added for the three
+private fields.
