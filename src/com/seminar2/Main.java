@@ -20,7 +20,7 @@ public class Main {
 
         System.out.println();
         System.out.println("=== Customer ===");
-        Customer customer = new Customer("Aziz Karimov", 120, 45.50);
+        Customer customer = new Customer("Aziz Karimov", 120, 45.567);
         System.out.println("Name: " + customer.getName());
         System.out.println("Loyalty points: " + customer.getLoyaltyPoints());
         System.out.println("Account balance: " + customer.getAccountBalance());

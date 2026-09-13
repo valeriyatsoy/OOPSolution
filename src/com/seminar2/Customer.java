@@ -13,7 +13,7 @@ public class Customer {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "Unknown" : name.trim();
     }
 
     public void setName(String name) {
@@ -29,7 +29,7 @@ public class Customer {
     }
 
     public double getAccountBalance() {
-        return accountBalance;
+        return Math.round(accountBalance * 100.0) / 100.0;
     }
 
     public void setAccountBalance(double accountBalance) {
