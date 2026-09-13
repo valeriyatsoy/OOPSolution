@@ -1,17 +1,19 @@
-# Exercise 5 (Optional) -- Extra Logic in a Getter
+# Exercise 6 (Advanced) -- Composition with Address
 
-**Objective:** see that a getter is a normal method -- it can compute, not
-just return, a value.
+**Objective:** practise composition by giving `Customer` a field whose type
+is another class.
 
 **What changed:**
-- `Customer.getName()` now trims the stored name before returning it.
-- `Customer.getAccountBalance()` now rounds the balance to two decimal
-  places before returning it.
-- `Main` passes an unrounded balance (`45.567`) into the `Customer`
-  constructor to make the rounding visible in the printed output.
+- Added `Address`: `street`, `city`, `postalCode` (all `String`), a
+  constructor, and getters/setters.
+- `Customer` gained a private `Address` field, a second (overloaded)
+  constructor that also accepts an `Address`, and a getter/setter for it.
+- `Main` creates an `Address`, passes it into the `Customer` constructor,
+  and prints `customer.getAddress().getCity()` to show the chained access.
 
-**Run it:** run `Main.main()` -- `Account balance:` prints `45.57`, not
-`45.567`, even though nothing changed about how the getter is called.
+**Run it:** run `Main.main()` -- the final line of the `Customer` block
+prints the address's city via the nested getter call.
 
-**Next (Exercise 6, advanced):** composition -- `Customer` gets an
-`Address`.
+**This is the final branch** -- `ex1` through `ex6` together walk through
+the whole of Seminar 2 (Encapsulation), each branch building cleanly on the
+last.

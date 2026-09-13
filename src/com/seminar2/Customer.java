@@ -5,11 +5,17 @@ public class Customer {
     private String name;
     private int loyaltyPoints;
     private double accountBalance;
+    private Address address;
 
     public Customer(String name, int loyaltyPoints, double accountBalance) {
         this.name = name;
         this.loyaltyPoints = loyaltyPoints;
         this.accountBalance = accountBalance;
+    }
+
+    public Customer(String name, int loyaltyPoints, double accountBalance, Address address) {
+        this(name, loyaltyPoints, accountBalance);
+        this.address = address;
     }
 
     public String getName() {
@@ -34,5 +40,13 @@ public class Customer {
 
     public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
