@@ -17,5 +17,15 @@ public class Main {
 
         product.setQuantity(-5);
         System.out.println("Quantity after invalid update attempt: " + product.getQuantity());
+
+        System.out.println();
+        System.out.println("=== Customer ===");
+        Customer customer = new Customer("Aziz Karimov", 120, 45.50);
+        System.out.println("Name: " + customer.getName());
+        System.out.println("Loyalty points: " + customer.getLoyaltyPoints());
+        System.out.println("Account balance: " + customer.getAccountBalance());
+
+        customer.setLoyaltyPoints(150);
+        System.out.println("Updated loyalty points: " + customer.getLoyaltyPoints());
     }
 }
