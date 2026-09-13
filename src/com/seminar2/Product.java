@@ -26,11 +26,35 @@ public class Product {
         return name;
     }
 
+    public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            System.out.println("Invalid name - name was not changed.");
+            return;
+        }
+        this.name = name;
+    }
+
     public double getPrice() {
         return price;
     }
 
+    public void setPrice(double price) {
+        if (price < 0) {
+            System.out.println("Price cannot be negative - price was not changed.");
+            return;
+        }
+        this.price = price;
+    }
+
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            System.out.println("Quantity cannot be negative - quantity was not changed.");
+            return;
+        }
+        this.quantity = quantity;
     }
 }

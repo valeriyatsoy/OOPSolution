@@ -1,23 +1,18 @@
-# Exercise 2 -- Private Fields, Getters, Constructors
+# Exercise 3 -- Setters and Validation
 
-**Objective:** hide some of `Product`'s fields and see why that forces you to
-set them through a constructor instead of the dot operator.
+**Objective:** add controlled, validated write-access back to the private
+fields.
 
 **What changed:**
-- `name`, `price` and `quantity` are now `private`; `inStock` and `grade`
-  stay `public`.
-- Added `getName()`, `getPrice()`, `getQuantity()`.
-- Added a no-argument constructor (sensible defaults) and a parameterised
-  constructor taking all five fields -- constructor overloading.
-- `Main` now builds its `Product` with the parameterised constructor and
-  reads the private fields through the getters.
+- Added `setName`, `setPrice`, `setQuantity`, each rejecting an invalid
+  value (blank name, negative price, negative quantity) with a printed
+  message instead of applying it.
+- `Main` now calls the setters -- once with a valid price, once with an
+  invalid quantity -- to show the validation in action.
 
-**Run it:** run `Main.main()` -- same five values print, but `Product`'s
-three private fields can no longer be reached with `product.name = ...;`
-from `Main`.
+**Run it:** run `Main.main()`. The price update is applied; the negative
+quantity is rejected and the quantity is left unchanged, without stopping
+the program.
 
-**Discuss in tutorial:** try assigning `product.name` directly in `Main` --
-it no longer compiles. That's the point.
-
-**Next (Exercise 3):** setters with validation logic are added for the three
-private fields.
+**Next (Exercise 4):** a second class, `Customer`, is built from scratch
+using IntelliJ's constructor/getter/setter generator.
