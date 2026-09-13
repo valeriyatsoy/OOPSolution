@@ -19,7 +19,7 @@ public class Main {
         System.out.println("Quantity after invalid update attempt: " + product.getQuantity());
 
         System.out.println();
-        System.out.println("=== Customer ===");
+        System.out.println("Customer");
         Customer customer = new Customer("Aziz Karimov", 120, 45.567);
         System.out.println("Name: " + customer.getName());
         System.out.println("Loyalty points: " + customer.getLoyaltyPoints());
