@@ -57,4 +57,17 @@ public class Product {
         }
         this.quantity = quantity;
     }
+
+    public double getPriceWithTax() {
+        // 12% VAT, rounded to two decimal places
+        return Math.round(price * 1.12 * 100.0) / 100.0;
+    }
+
+    public void deliver() {
+        System.out.println("Delivering " + name + " to the customer.");
+    }
+
+    public double calculateDeliveryCost() {
+        return 5.0; // standard flat delivery fee
+    }
 }

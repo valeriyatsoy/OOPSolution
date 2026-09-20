@@ -1,19 +1,21 @@
-# Exercise 6 (Advanced) -- Composition with Address
+# Seminar 3, Exercise 1 -- Enhance the Product class
 
-**Objective:** practise composition by giving `Customer` a field whose type
-is another class.
+**Objective:** prepare `Product` to be a parent class by giving it shared
+behaviour that its future subtypes will inherit.
 
 **What changed:**
-- Added `Address`: `street`, `city`, `postalCode` (all `String`), a
-  constructor, and getters/setters.
-- `Customer` gained a private `Address` field, a second (overloaded)
-  constructor that also accepts an `Address`, and a getter/setter for it.
-- `Main` creates an `Address`, passes it into the `Customer` constructor,
-  and prints `customer.getAddress().getCity()` to show the chained access.
+- Added `public double getPriceWithTax()` -- price + 12% VAT, rounded to two
+  decimals. Every subtype will inherit it as it is.
+- Added `public void deliver()` -- prints a general "Delivering <name> to the
+  customer." message.
+- Added `public double calculateDeliveryCost()` -- returns a standard flat fee
+  of 5.0.
+- `deliver()` and `calculateDeliveryCost()` are ordinary methods with default
+  behaviour; subtypes will replace ("override") them with more specific
+  versions in Exercise 4.
+- `Main` calls the three new methods on the existing `Product` object.
 
-**Run it:** run `Main.main()` -- the final line of the `Customer` block
-prints the address's city via the nested getter call.
+**Run it:** run `Main.main()` -- the Product block now also prints the price
+with tax (22.39), the delivery message and the delivery cost (5.0).
 
-**This is the final branch** -- `ex1` through `ex6` together walk through
-the whole of Seminar 2 (Encapsulation), each branch building cleanly on the
-last.
+**What's next:** Exercise 2 creates `PhysicalProduct` and `DigitalProduct`.

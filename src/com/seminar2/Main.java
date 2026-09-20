@@ -9,6 +9,9 @@ public class Main {
         System.out.println("Quantity: " + product.getQuantity());
         System.out.println("In stock: " + product.inStock);
         System.out.println("Grade: " + product.grade);
+        System.out.println("Price with tax: " + product.getPriceWithTax());
+        product.deliver();
+        System.out.println("Delivery cost: " + product.calculateDeliveryCost());
 
         System.out.println();
         System.out.println("Using the setters:");

@@ -27,3 +27,27 @@ To see exactly what an exercise added, diff it against its parent:
 ```
 git diff ex2..ex3
 ```
+
+---
+
+# Seminar 3 -- Inheritance (companion project)
+
+Seminar 3 continues in this same project: the starter is the final Seminar 2
+state (`seminarTwo_ex6`), and all new classes are added to the existing
+`com.seminar2` package. As before, each exercise has its own branch holding the
+project exactly as it should look at the end of that exercise, plus a
+`docs/EXERCISE_NOTES.md` explaining what changed.
+
+```
+seminarTwo_ex6            starter: final state of Seminar 2
+ |- seminarThree_ex1          Product: getPriceWithTax + default deliver / calculateDeliveryCost
+     |- seminarThree_ex2          PhysicalProduct and DigitalProduct subtypes (own fields and methods)
+         |- seminarThree_ex3          constructors with super(...) calls
+             |- seminarThree_ex4          overriding deliver() and calculateDeliveryCost()
+                 |- seminarThree_ex5          multi-level: EBook and SoftwareLicense under DigitalProduct
+                     |- seminarThree_ex6          EBook / SoftwareLicense override Product methods too
+                         |- seminarThree_ex7          (optional) ElectronicDevice and Clothing under PhysicalProduct
+```
+
+To see one exercise's solution: `git checkout seminarThree_ex3`.
+To see exactly what an exercise added: `git diff seminarThree_ex2..seminarThree_ex3`.
