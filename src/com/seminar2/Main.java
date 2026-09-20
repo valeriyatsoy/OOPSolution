@@ -3,14 +3,7 @@ package com.seminar2;
 public class Main {
     public static void main(String[] args) {
         System.out.println("=== PhysicalProduct ===");
-        PhysicalProduct laptop = new PhysicalProduct();
-        laptop.setName("Laptop");
-        laptop.setPrice(899.99);
-        laptop.setQuantity(10);
-        laptop.inStock = true;
-        laptop.grade = 'A';
-        laptop.setWeightKg(2.1);
-        laptop.setFragile(true);
+        PhysicalProduct laptop = new PhysicalProduct("Laptop", 899.99, 10, true, 'A', 2.1, true);
 
         System.out.println("Name: " + laptop.getName());
         System.out.println("Price with tax: " + laptop.getPriceWithTax());
@@ -23,13 +16,8 @@ public class Main {
 
         System.out.println();
         System.out.println("=== DigitalProduct ===");
-        DigitalProduct course = new DigitalProduct();
-        course.setName("Java Basics Video Course");
-        course.setPrice(49.0);
-        course.inStock = true;
-        course.grade = 'A';
-        course.setFileSizeMb(1500);
-        course.setDownloadUrl("https://example.com/downloads/java-basics");
+        DigitalProduct course = new DigitalProduct("Java Basics Video Course", 49.0, 'A',
+                1500, "https://example.com/downloads/java-basics");
 
         System.out.println("Name: " + course.getName());
         System.out.println("Price with tax: " + course.getPriceWithTax());

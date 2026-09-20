@@ -5,6 +5,13 @@ public class PhysicalProduct extends Product {
     private double weightKg;
     private boolean fragile;
 
+    public PhysicalProduct(String name, double price, int quantity, boolean inStock, char grade,
+                           double weightKg, boolean fragile) {
+        super(name, price, quantity, inStock, grade);
+        this.weightKg = weightKg;
+        this.fragile = fragile;
+    }
+
     public double getWeightKg() {
         return weightKg;
     }

@@ -5,6 +5,13 @@ public class DigitalProduct extends Product {
     private double fileSizeMb;
     private String downloadUrl;
 
+    public DigitalProduct(String name, double price, char grade, double fileSizeMb, String downloadUrl) {
+        // Digital goods never sell out, so quantity is not tracked: we pass 0 and true to Product.
+        super(name, price, 0, true, grade);
+        this.fileSizeMb = fileSizeMb;
+        this.downloadUrl = downloadUrl;
+    }
+
     public double getFileSizeMb() {
         return fileSizeMb;
     }
