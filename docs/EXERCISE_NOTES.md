@@ -1,21 +1,25 @@
-# Seminar 3, Exercise 6 (optional) -- Overriding methods from the top of the hierarchy
+# Seminar 3, Exercise 7 (optional) -- Multi-level inheritance under PhysicalProduct
 
-**Objective:** override methods that were first declared in `Product`
-(two levels up), and use `super.method()` to extend a parent's behaviour
-instead of replacing it.
+**Objective:** repeat the multi-level pattern on the physical side of the
+hierarchy (`Product` -> `PhysicalProduct` -> `ElectronicDevice` / `Clothing`),
+overriding methods from both the immediate parent and the top-level `Product`.
 
 **What changed:**
-- `EBook` overrides `getPriceWithTax()` (fully replaces it: reduced 6% rate,
-  an assumption made just for this exercise) and `deliver()` (adds the book to
-  an online library and e-mails the file link).
-- `SoftwareLicense` overrides `getPriceWithTax()` by calling
-  `super.getPriceWithTax()` and adding a flat 2.00 activation fee, and overrides
-  `deliver()` to send the installer link together with the license key.
-- Neither class overrides `calculateDeliveryCost()`: they inherit
-  `DigitalProduct`'s version (0.0) -- inheritance saves us rewriting it.
-- `Main` is unchanged; its existing calls now run the new versions.
+- Added `ElectronicDevice extends PhysicalProduct`: own fields `brand`,
+  `warrantyMonths`; its constructor passes `true` for `fragile` and computes
+  `inStock` as `quantity > 0` inside `super(...)`.
+- Added `Clothing extends PhysicalProduct`: own fields `size`, `material`;
+  its constructor passes `false` for `fragile`.
+- Both override `PhysicalProduct.getPackagingNote()` (parent's own method)
+  and `deliver()` / `calculateDeliveryCost()` (declared in `Product`).
+- `ElectronicDevice.calculateDeliveryCost()` calls
+  `super.calculateDeliveryCost()` and adds a 2.50 insurance fee (extends the
+  parent's version); `Clothing.calculateDeliveryCost()` returns a flat 3.00
+  (replaces the parent's version).
+- `Main` creates one object of each new type.
 
-**Run it:** run `Main.main()` -- e-book price with tax drops to 26.5, the
-license's rises to 69.19, and both print their own `deliver()` messages.
+**Run it:** run `Main.main()` -- the smartphone's delivery cost is 11.8
+(5.00 + 0.30 + 4.00 fragile + 2.50 insurance), the jacket's is a flat 3.0.
 
-**What's next:** Exercise 7 (optional) repeats the idea under `PhysicalProduct`.
+**This is the final branch** -- `seminarThree_ex1` through `seminarThree_ex7`
+together walk through the whole of Seminar 3 (Inheritance).

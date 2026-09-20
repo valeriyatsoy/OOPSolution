@@ -47,6 +47,24 @@ public class Main {
         System.out.println("Delivery cost: " + editor.calculateDeliveryCost());
 
         System.out.println();
+        System.out.println("=== ElectronicDevice ===");
+        ElectronicDevice phone = new ElectronicDevice("Smartphone", 649.0, 25, 'A', 0.2, "TechNova", 24);
+        System.out.println("Brand: " + phone.getBrand());
+        System.out.println("Fragile: " + phone.isFragile());
+        System.out.println("Price with tax: " + phone.getPriceWithTax());
+        phone.deliver();
+        System.out.println("Delivery cost: " + phone.calculateDeliveryCost());
+
+        System.out.println();
+        System.out.println("=== Clothing ===");
+        Clothing jacket = new Clothing("Winter Jacket", 79.5, 40, 'B', 1.2, "M", "Polyester");
+        System.out.println("Size: " + jacket.getSize());
+        System.out.println("Fragile: " + jacket.isFragile());
+        System.out.println("Price with tax: " + jacket.getPriceWithTax());
+        jacket.deliver();
+        System.out.println("Delivery cost: " + jacket.calculateDeliveryCost());
+
+        System.out.println();
         System.out.println("=== Customer ===");
         Address address = new Address("12 Amir Temur St", "Tashkent", "100000");
         Customer customer = new Customer("Aziz Karimov", 120, 45.567, address);
