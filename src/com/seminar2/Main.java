@@ -27,6 +27,26 @@ public class Main {
         System.out.println("Delivery cost: " + course.calculateDeliveryCost());
 
         System.out.println();
+        System.out.println("=== EBook ===");
+        EBook book = new EBook("Clean Code", 25.0, 'A', 4.5, "https://example.com/downloads/clean-code",
+                "Robert C. Martin", 464, "PDF");
+        System.out.println("Author: " + book.getAuthor());
+        System.out.println("Price with tax: " + book.getPriceWithTax());
+        book.download();
+        book.deliver();
+        System.out.println("Delivery cost: " + book.calculateDeliveryCost());
+
+        System.out.println();
+        System.out.println("=== SoftwareLicense ===");
+        SoftwareLicense editor = new SoftwareLicense("PhotoEditor Pro", 59.99, 'A', 850,
+                "https://example.com/downloads/photoeditor", "ABCD-1234-EFGH-5678", 12, 3);
+        System.out.println("License key: " + editor.getLicenseKey());
+        System.out.println("Price with tax: " + editor.getPriceWithTax());
+        editor.download();
+        editor.deliver();
+        System.out.println("Delivery cost: " + editor.calculateDeliveryCost());
+
+        System.out.println();
         System.out.println("=== Customer ===");
         Address address = new Address("12 Amir Temur St", "Tashkent", "100000");
         Customer customer = new Customer("Aziz Karimov", 120, 45.567, address);
