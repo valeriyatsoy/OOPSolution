@@ -58,9 +58,15 @@ public class Product {
         this.quantity = quantity;
     }
 
+    // protected: usable inside Product and in its subclasses -- a helper for the class
+    // family, not something outside code should call.
+    protected double roundToTwoDecimals(double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
+
     public double getPriceWithTax() {
         // 12% VAT, rounded to two decimal places
-        return Math.round(price * 1.12 * 100.0) / 100.0;
+        return roundToTwoDecimals(price * 1.12);
     }
 
     public void deliver() {

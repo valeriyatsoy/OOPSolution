@@ -51,4 +51,22 @@ public class PhysicalProduct extends Product {
     public String getPackagingNote() {
         return fragile ? "Bubble wrap inside a sturdy box" : "Standard cardboard box";
     }
+
+    @Override
+    public void deliver() {
+        System.out.println("Shipping " + getName() + " (" + weightKg + " kg) by courier.");
+        System.out.println("Packaging: " + getPackagingNote());
+        if (isHeavy()) {
+            System.out.println("Heavy item - a two-person delivery team is required.");
+        }
+    }
+
+    @Override
+    public double calculateDeliveryCost() {
+        double cost = 5.0 + 1.5 * weightKg;
+        if (fragile) {
+            cost += 4.0;
+        }
+        return roundToTwoDecimals(cost);
+    }
 }

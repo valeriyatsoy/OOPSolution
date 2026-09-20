@@ -43,4 +43,14 @@ public class DigitalProduct extends Product {
         }
         return fileSizeMb * 8 / speedMbps;
     }
+
+    @Override
+    public void deliver() {
+        System.out.println("Sending the download link for " + getName() + " by e-mail: " + downloadUrl);
+    }
+
+    @Override
+    public double calculateDeliveryCost() {
+        return 0.0; // nothing to ship
+    }
 }

@@ -1,28 +1,30 @@
-# Seminar 3, Exercise 3 -- Constructors in subclasses
+# Seminar 3, Exercise 4 -- Method overriding
 
-**Objective:** understand how constructors work across an inheritance
-relationship and write subclass constructors that call `super(...)`.
+**Objective:** replace the inherited `deliver()` and `calculateDeliveryCost()`
+with versions written for each subtype and see that the same method call
+behaves differently for different objects.
 
 **What changed:**
-- `PhysicalProduct` gained a constructor taking all five `Product` values plus
-  its own `weightKg` and `fragile`. Its first line is
-  `super(name, price, quantity, inStock, grade)`, which runs the `Product`
-  constructor; only then does it set its own fields.
-- `DigitalProduct` gained a constructor taking `name`, `price`, `grade`,
-  `fileSizeMb`, `downloadUrl`. A subclass constructor does not have to mirror
-  the parent's parameters: digital goods never sell out, so it passes the
-  constants `0` and `true` for quantity and inStock inside `super(...)`.
-- Once a class declares any constructor, Java no longer supplies the
-  no-argument one -- so `new PhysicalProduct()` / `new DigitalProduct()` no
-  longer compile, and `Main` now creates both objects through the new
-  constructors (no more setter lines needed to fill the objects in).
+- `PhysicalProduct.deliver()` prints a shipping message including the
+  packaging note, and an extra line for heavy items.
+- `PhysicalProduct.calculateDeliveryCost()` returns a base fee of 5.00 plus
+  1.50 per kg, plus a 4.00 surcharge for fragile items, rounded to two decimals.
+- `DigitalProduct.deliver()` "e-mails" the download link.
+- `DigitalProduct.calculateDeliveryCost()` returns `0.0` -- nothing to ship.
+- Both classes mark these methods with `@Override`, which makes the compiler
+  check that the method really matches one in a parent class.
+- `Product` gained a `protected double roundToTwoDecimals(double)` helper
+  (the `Math.round(value * 100.0) / 100.0` trick in one place). `protected`
+  means only `Product` and its subclasses can use it; `Product.getPriceWithTax()`
+  and `PhysicalProduct.calculateDeliveryCost()` now call it instead of repeating
+  the rounding. Java's `protected` also includes the same package, so `Main`
+  (same package) could call it too -- the hiding shows when a subclass lives in
+  another package. Later exercises use the helper wherever they round a price.
+- `Main` is unchanged: it already called `deliver()` and
+  `calculateDeliveryCost()` on both objects, but they now run the new versions.
 
-**Run it:** run `Main.main()` -- same output as Exercise 2 (the delivery methods still
-behave like `Product`'s general versions).
+**Run it:** run `Main.main()` -- laptop delivery cost is 12.15 (it was 5.0
+before), the video course's is 0.0, and each object prints its own kind of
+delivery message.
 
-**Experiment (not part of the solution):** delete the `super(...)` line from one
-constructor -- it still compiles because Java silently inserts `super()`, but
-the object now has `Product`'s default values ("Unnamed product"). Then comment
-out `Product`'s no-argument constructor and watch that same line stop compiling.
-
-**What's next:** Exercise 4 overrides `deliver()` and `calculateDeliveryCost()` in both subtypes.
+**What's next:** Exercise 5 adds a third level of inheritance under `DigitalProduct`.
