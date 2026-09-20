@@ -45,7 +45,7 @@ seminarTwo_ex6            starter: final state of Seminar 2
          |- seminarThree_ex3          constructors with super(...) calls
              |- seminarThree_ex4          overriding deliver() / calculateDeliveryCost(); protected helper roundToTwoDecimals()
                  |- seminarThree_ex5          multi-level: EBook and SoftwareLicense under DigitalProduct
-                     |- seminarThree_ex6          EBook / SoftwareLicense override Product methods too
+                     |- seminarThree_ex6          (optional) EBook / SoftwareLicense override Product methods too
                          |- seminarThree_ex7          (optional) ElectronicDevice and Clothing under PhysicalProduct
 ```
 

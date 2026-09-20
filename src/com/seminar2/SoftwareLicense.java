@@ -44,4 +44,16 @@ public class SoftwareLicense extends DigitalProduct {
         System.out.println("License key: " + licenseKey + " - valid for " + durationMonths
                 + " months on up to " + maxDevices + " device(s)");
     }
+
+    @Override
+    public double getPriceWithTax() {
+        // start from Product's standard tax calculation, then add a flat activation fee
+        return roundToTwoDecimals(super.getPriceWithTax() + 2.0);
+    }
+
+    @Override
+    public void deliver() {
+        System.out.println("E-mailing the installer link " + getDownloadUrl()
+                + " together with the license key " + licenseKey);
+    }
 }

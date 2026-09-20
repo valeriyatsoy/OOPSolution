@@ -43,4 +43,16 @@ public class EBook extends DigitalProduct {
         System.out.println("Downloading e-book \"" + getName() + "\" by " + author
                 + " (" + format + ", " + pageCount + " pages, " + getFileSizeMb() + " MB)");
     }
+
+    @Override
+    public double getPriceWithTax() {
+        // for this exercise, assume e-books are taxed at a reduced 6% rate
+        return roundToTwoDecimals(getPrice() * 1.06);
+    }
+
+    @Override
+    public void deliver() {
+        System.out.println("Adding \"" + getName() + "\" to your online library and e-mailing the "
+                + format + " file link: " + getDownloadUrl());
+    }
 }
