@@ -2,24 +2,41 @@ package com.seminar2;
 
 public class Main {
     public static void main(String[] args) {
-        Product product = new Product("Wireless Mouse", 19.99, 50, true, 'A');
+        System.out.println("=== PhysicalProduct ===");
+        PhysicalProduct laptop = new PhysicalProduct();
+        laptop.setName("Laptop");
+        laptop.setPrice(899.99);
+        laptop.setQuantity(10);
+        laptop.inStock = true;
+        laptop.grade = 'A';
+        laptop.setWeightKg(2.1);
+        laptop.setFragile(true);
 
-        System.out.println("Name: " + product.getName());
-        System.out.println("Price: " + product.getPrice());
-        System.out.println("Quantity: " + product.getQuantity());
-        System.out.println("In stock: " + product.inStock);
-        System.out.println("Grade: " + product.grade);
-        System.out.println("Price with tax: " + product.getPriceWithTax());
-        product.deliver();
-        System.out.println("Delivery cost: " + product.calculateDeliveryCost());
+        System.out.println("Name: " + laptop.getName());
+        System.out.println("Price with tax: " + laptop.getPriceWithTax());
+        System.out.println("Heavy: " + laptop.isHeavy());
+        System.out.println("Packaging: " + laptop.getPackagingNote());
+        laptop.reduceStock(3);
+        System.out.println("Quantity after selling 3: " + laptop.getQuantity());
+        laptop.deliver();
+        System.out.println("Delivery cost: " + laptop.calculateDeliveryCost());
 
         System.out.println();
-        System.out.println("Using the setters:");
-        product.setPrice(24.99);
-        System.out.println("Updated price: " + product.getPrice());
+        System.out.println("=== DigitalProduct ===");
+        DigitalProduct course = new DigitalProduct();
+        course.setName("Java Basics Video Course");
+        course.setPrice(49.0);
+        course.inStock = true;
+        course.grade = 'A';
+        course.setFileSizeMb(1500);
+        course.setDownloadUrl("https://example.com/downloads/java-basics");
 
-        product.setQuantity(-5);
-        System.out.println("Quantity after invalid update attempt: " + product.getQuantity());
+        System.out.println("Name: " + course.getName());
+        System.out.println("Price with tax: " + course.getPriceWithTax());
+        course.download();
+        System.out.println("Estimated download time at 50 Mbps: " + course.estimateDownloadSeconds(50) + " seconds");
+        course.deliver();
+        System.out.println("Delivery cost: " + course.calculateDeliveryCost());
 
         System.out.println();
         System.out.println("=== Customer ===");
