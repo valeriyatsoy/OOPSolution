@@ -54,6 +54,13 @@ public class Order {
         return Math.round((getItemsTotal() + getDeliveryCost()) * 100.0) / 100.0;
     }
 
+    // Business logic: placing the order charges the customer.
+    public void place() {
+        double total = getTotal();
+        customer.setAccountBalance(customer.getAccountBalance() - total);
+        System.out.println("Order " + orderId + " placed. " + total + " was charged.");
+    }
+
     public void printSummary() {
         System.out.println("Order " + orderId + " for " + customer.getName());
         for (OrderItem item : items) {

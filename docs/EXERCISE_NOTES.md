@@ -1,26 +1,19 @@
-# Seminar 4, Exercise 3 -- The Order class: a Customer and a List<OrderItem>
+# Seminar 4, Exercise 4 -- Placing the order (business logic); import static
 
-**Objective:** combine several objects into one (composition and
-aggregation) and use a `List` to hold a variable number of parts.
+**Objective:** write business logic that works across several connected
+objects (`Order` -> `OrderItem` -> `Product`, `Order` -> `Customer`), and
+shorten console output with a static import.
 
 **What changed:**
-- Added `Order` with fields `String orderId`, `Customer customer` and
-  `List<OrderItem> items = new ArrayList<>()`.
-  - `customer` is **aggregation**: the customer existed before the order and
-    lives on after it.
-  - `items` is **composition**: the order creates its `OrderItem` objects
-    itself (`addItem`) and they make no sense without it.
-- `addItem(Product, int)`: rejects a quantity <= 0; otherwise the order
-  creates the item itself: `items.add(new OrderItem(...))`.
-- `getItemsTotal()`, `getDeliveryCost()` (one fee per line, each product type
-  uses its own `calculateDeliveryCost()` from Seminar 3) and `getTotal()`.
-- `printSummary()` prints the lines, the totals and the customer's shipping
-  address.
-- `RunOrder`: the separate `OrderItem` demo from Ex2 is replaced by an
-  `Order` that creates the items itself.
+- `Order.place()` charges the customer: it subtracts `getTotal()` from the
+  balance with `setAccountBalance(...)` and prints how much was charged. It works only through `Customer`'s public
+  methods.
+- `RunOrder` now starts with `import static java.lang.System.out;` and every
+  `System.out.println(...)` became `out.println(...)`. The static import only
+  affects `RunOrder`; `Order` keeps `System.out.println`.
+- `RunOrder` tops up the customer's balance and places ORD-001.
 
-**Run it:** run `RunOrder.main()` -- with laptop x2 and course x1 the total
-is 2083.01 (items 2070.86 + delivery 12.15); adding the course with quantity
-0 is rejected.
+**Run it:** run `RunOrder.main()` -- "Order ORD-001 placed. 2083.01 was
+charged.", balance 2545.57 -> 462.56.
 
-**Next:** `seminarFour_ex4` -- placing the order; `import static` in `RunOrder`.
+**Next:** `seminarFour_ex5` (optional) -- several delivery addresses with a `Map`.
