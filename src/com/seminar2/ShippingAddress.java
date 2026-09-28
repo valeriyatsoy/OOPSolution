@@ -1,12 +1,12 @@
 package com.seminar2;
 
-public class Address {
+public class ShippingAddress {
 
     private String street;
     private String city;
     private String postalCode;
 
-    public Address(String street, String city, String postalCode) {
+    public ShippingAddress(String street, String city, String postalCode) {
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;

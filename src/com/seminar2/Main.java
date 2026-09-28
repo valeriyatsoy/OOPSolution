@@ -66,12 +66,12 @@ public class Main {
 
         System.out.println();
         System.out.println("=== Customer ===");
-        Address address = new Address("12 Amir Temur St", "Tashkent", "100000");
-        Customer customer = new Customer("Aziz Karimov", 120, 45.567, address);
+        ShippingAddress shippingAddress = new ShippingAddress("12 Amir Temur St", "Tashkent", "100000");
+        Customer customer = new Customer("Aziz Karimov", 120, 45.567, shippingAddress);
         System.out.println("Name: " + customer.getName());
         System.out.println("Loyalty points: " + customer.getLoyaltyPoints());
         System.out.println("Account balance: " + customer.getAccountBalance());
-        System.out.println("City: " + customer.getAddress().getCity());
+        System.out.println("City: " + customer.getShippingAddress().getCity());
 
         customer.setLoyaltyPoints(150);
         System.out.println("Updated loyalty points: " + customer.getLoyaltyPoints());

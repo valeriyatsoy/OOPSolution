@@ -51,3 +51,26 @@ seminarTwo_ex6            starter: final state of Seminar 2
 
 To see one exercise's solution: `git checkout seminarThree_ex3`.
 To see exactly what an exercise added: `git diff seminarThree_ex2..seminarThree_ex3`.
+
+---
+
+# Seminar 4 -- Composition and Collections (companion project)
+
+Seminar 4 continues in this same project: the starter is the final Seminar 3
+state (`seminarThree_ex7`), and all new classes are added to the existing
+`com.seminar2` package. `Main` keeps the inheritance demos; the new class
+`RunOrder`, a second class with a `main` method, is where we practise composition by building and placing an
+order. Each exercise has its own branch holding the project exactly as it
+should look at the end of that exercise, plus a `docs/EXERCISE_NOTES.md`.
+
+```
+seminarThree_ex7          starter: final state of Seminar 3
+ |- seminarFour_ex1           RunOrder class (second main class); refactoring: Address -> ShippingAddress (Shift+F6)
+     |- seminarFour_ex2           OrderItem: has a Product and a quantity
+         |- seminarFour_ex3           Order: has a Customer and a List<OrderItem>
+             |- seminarFour_ex4           placing the order (business logic); import static System.out in RunOrder
+                 |- seminarFour_ex5           (optional) several delivery addresses: Map<String, ShippingAddress>
+```
+
+To see one exercise's solution: `git checkout seminarFour_ex3`.
+To see exactly what an exercise added: `git diff seminarFour_ex2..seminarFour_ex3`.

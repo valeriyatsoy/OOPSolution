@@ -5,7 +5,7 @@ public class Customer {
     private String name;
     private int loyaltyPoints;
     private double accountBalance;
-    private Address address;
+    private ShippingAddress shippingAddress;
 
     public Customer(String name, int loyaltyPoints, double accountBalance) {
         this.name = name;
@@ -13,9 +13,9 @@ public class Customer {
         this.accountBalance = accountBalance;
     }
 
-    public Customer(String name, int loyaltyPoints, double accountBalance, Address address) {
+    public Customer(String name, int loyaltyPoints, double accountBalance, ShippingAddress shippingAddress) {
         this(name, loyaltyPoints, accountBalance);
-        this.address = address;
+        this.shippingAddress = shippingAddress;
     }
 
     public String getName() {
@@ -42,11 +42,11 @@ public class Customer {
         this.accountBalance = accountBalance;
     }
 
-    public Address getAddress() {
-        return address;
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }
