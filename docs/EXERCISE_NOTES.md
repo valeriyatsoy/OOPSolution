@@ -1,19 +1,34 @@
-# Seminar 4, Exercise 4 -- Placing the order (business logic); import static
+# Seminar 4, Exercise 5 (optional) -- Several delivery addresses with Map<String, ShippingAddress>
 
-**Objective:** write business logic that works across several connected
-objects (`Order` -> `OrderItem` -> `Product`, `Order` -> `Customer`), and
-shorten console output with a static import.
+**Objective:** use a `Map` when every value is looked up by a unique key.
 
 **What changed:**
-- `Order.place()` charges the customer: it subtracts `getTotal()` from the
-  balance with `setAccountBalance(...)` and prints how much was charged. It works only through `Customer`'s public
-  methods.
-- `RunOrder` now starts with `import static java.lang.System.out;` and every
-  `System.out.println(...)` became `out.println(...)`. The static import only
-  affects `RunOrder`; `Order` keeps `System.out.println`.
-- `RunOrder` tops up the customer's balance and places ORD-001.
+- `Customer` has a new field
+  `private Map<String, ShippingAddress> deliveryAddresses = new LinkedHashMap<>();`
+  -- the key is a label such as `"home"` or `"office"`, the value is the
+  address. (`LinkedHashMap` keeps the order of adding; `HashMap` would also
+  work, `TreeMap` would sort the labels alphabetically.)
+- The existing `shippingAddress` field stays: it is the address the next
+  orders are shipped to, so `Order` did not have to change.
+- New methods:
+  - `addDeliveryAddress(String label, ShippingAddress address)` -- `put()`;
+    prints a message when an existing label is replaced;
+  - `boolean removeDeliveryAddress(String label)` -- `remove()` returns the
+    old value or `null`;
+  - `ShippingAddress getDeliveryAddress(String label)` -- `get()`, `null` if
+    the label is unknown;
+  - `boolean useDeliveryAddress(String label)` -- makes the chosen address
+    the shipping address;
+  - `Set<String> getAddressLabels()` -- a copy of `keySet()`;
+  - `printDeliveryAddresses()` -- loop over `entrySet()` with
+    `Map.Entry<String, ShippingAddress>`.
+- `RunOrder` saves home/office/parents, replaces the office address, selects
+  "office", and places ORD-002 for a winter jacket, which is shipped to the
+  office.
 
-**Run it:** run `RunOrder.main()` -- "Order ORD-001 placed. 2083.01 was
-charged.", balance 2545.57 -> 462.56.
+**Run it:** run `RunOrder.main()` -- `Address "office" was replaced.`, the
+jacket order (92.04 = 89.04 + 3.0) ships to 8 Shota Rustaveli St, and after
+removing "parents" the labels are `[home, office]`.
 
-**Next:** `seminarFour_ex5` (optional) -- several delivery addresses with a `Map`.
+**This is the final branch** -- `seminarFour_ex1` through `seminarFour_ex5`
+together walk through the whole of Seminar 4 (Composition and Collections).

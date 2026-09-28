@@ -35,5 +35,29 @@ public class RunOrder {
         out.println("Balance before paying: " + customer.getAccountBalance());
         order.place();
         out.println("Balance after paying: " + customer.getAccountBalance());
+
+        out.println();
+        out.println("=== Delivery addresses ===");
+        Clothing jacket = new Clothing("Winter Jacket", 79.5, 40, 'B', 1.2, "M", "Polyester");
+        customer.addDeliveryAddress("home", home);
+        customer.addDeliveryAddress("office", new ShippingAddress("5 Mustaqillik Ave", "Tashkent", "100017"));
+        customer.addDeliveryAddress("parents", new ShippingAddress("24 Registan St", "Samarkand", "140100"));
+        customer.addDeliveryAddress("office",                          // same key: the old office address is replaced
+                new ShippingAddress("8 Shota Rustaveli St", "Tashkent", "100070"));
+        customer.printDeliveryAddresses();
+
+        customer.useDeliveryAddress("dacha");                            // no such label
+        customer.useDeliveryAddress("office");
+        out.println("Parents' city: " + customer.getDeliveryAddress("parents").getCity());
+
+        Order giftOrder = new Order("ORD-002", customer);
+        giftOrder.addItem(jacket, 1);
+        giftOrder.place();
+        giftOrder.printSummary();                                        // ships to the office
+
+        customer.removeDeliveryAddress("parents");
+        customer.removeDeliveryAddress("parents");                       // already removed
+        out.println("Saved labels: " + customer.getAddressLabels());
+        customer.printDeliveryAddresses();
     }
 }

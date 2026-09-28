@@ -1,11 +1,19 @@
 package com.seminar2;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class Customer {
 
     private String name;
     private int loyaltyPoints;
     private double accountBalance;
     private ShippingAddress shippingAddress;
+    // A Map stores label -> address pairs, e.g. "home" -> ..., "office" -> ...
+    // Each label (key) is unique. LinkedHashMap also remembers the order of adding.
+    private Map<String, ShippingAddress> deliveryAddresses = new LinkedHashMap<>();
 
     public Customer(String name, int loyaltyPoints, double accountBalance) {
         this.name = name;
@@ -48,5 +56,49 @@ public class Customer {
 
     public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+
+    public void addDeliveryAddress(String label, ShippingAddress address) {
+        if (deliveryAddresses.containsKey(label)) {
+            System.out.println("Address \"" + label + "\" was replaced.");
+        }
+        deliveryAddresses.put(label, address);    // put() with an existing key replaces the old value
+    }
+
+    public boolean removeDeliveryAddress(String label) {
+        if (deliveryAddresses.remove(label) == null) {
+            System.out.println("There is no address called \"" + label + "\".");
+            return false;
+        }
+        return true;
+    }
+
+    public ShippingAddress getDeliveryAddress(String label) {
+        return deliveryAddresses.get(label);      // null if there is no such label
+    }
+
+    // Chooses one of the saved addresses as the shipping address for the next orders.
+    public boolean useDeliveryAddress(String label) {
+        ShippingAddress address = deliveryAddresses.get(label);
+        if (address == null) {
+            System.out.println("There is no address called \"" + label + "\" - shipping address was not changed.");
+            return false;
+        }
+        shippingAddress = address;
+        System.out.println("Orders will now be shipped to \"" + label + "\".");
+        return true;
+    }
+
+    public Set<String> getAddressLabels() {
+        return new LinkedHashSet<>(deliveryAddresses.keySet());
+    }
+
+    public void printDeliveryAddresses() {
+        System.out.println(getName() + "'s delivery addresses (" + deliveryAddresses.size() + "):");
+        for (Map.Entry<String, ShippingAddress> entry : deliveryAddresses.entrySet()) {
+            String selected = entry.getValue() == shippingAddress ? "  <- selected" : "";
+            System.out.println("  " + entry.getKey() + ": " + entry.getValue() + selected);
+        }
     }
 }
