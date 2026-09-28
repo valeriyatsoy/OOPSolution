@@ -13,16 +13,18 @@ public class RunOrder {
         System.out.println("Ships to: " + customer.getShippingAddress());
 
         System.out.println();
-        System.out.println("=== Order items ===");
+        System.out.println("=== Products ===");
         PhysicalProduct laptop = new PhysicalProduct("Laptop", 899.99, 10, true, 'A', 2.1, true);
         DigitalProduct course = new DigitalProduct("Java Basics Video Course", 49.0, 'A',
                 1500, "https://example.com/downloads/java-basics");
+        System.out.println(laptop.getName() + ", " + course.getName());
 
-        OrderItem laptopItem = new OrderItem(laptop, 2);
-        OrderItem courseItem = new OrderItem(course, 1);
-        System.out.println(laptopItem);
-        System.out.println(courseItem);
-
-        System.out.println("Product inside the item: " + laptopItem.getProduct().getName());
+        System.out.println();
+        System.out.println("=== Order ===");
+        Order order = new Order("ORD-001", customer);
+        order.addItem(laptop, 2);
+        order.addItem(course, 1);
+        order.addItem(course, 0);      // rejected
+        order.printSummary();
     }
 }
