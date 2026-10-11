@@ -30,6 +30,16 @@ public class RunOrder {
         order.printSummary();
 
         out.println();
+        out.println("=== Notifications ===");
+        String text = "Order " + order.getOrderId() + " is waiting for payment: " + order.getTotal();
+        // The variable type is the abstract class, the object is a concrete subclass.
+        Notification push = new MobileNotification(customer, text, "iPhone 15");
+        Notification web = new WebNotification(customer, text, "Chrome");
+        push.send();
+        web.send();
+        // Notification notification = new Notification(customer, text);   // error: Notification is abstract
+
+        out.println();
         out.println("=== Placing the order ===");
         customer.setAccountBalance(customer.getAccountBalance() + 2500); // the customer tops up
         out.println("Balance before paying: " + customer.getAccountBalance());

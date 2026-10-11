@@ -74,3 +74,24 @@ seminarThree_ex7          starter: final state of Seminar 3
 
 To see one exercise's solution: `git checkout seminarFour_ex3`.
 To see exactly what an exercise added: `git diff seminarFour_ex2..seminarFour_ex3`.
+
+---
+
+# Seminar 6 -- Abstraction: Abstract Classes and Interfaces (companion project)
+
+Seminar 6 continues in this same project (Seminar 5 was UML and Git, with no
+coding): the starter is the final Seminar 4 state (`seminarFour_ex5`), and all
+new classes and interfaces are added to the existing `com.seminar2` package.
+Each exercise has its own branch holding the project exactly as it should look
+at the end of that exercise, plus a `docs/EXERCISE_NOTES.md`.
+
+```
+seminarFour_ex5           starter: final state of Seminar 4
+ |- seminarSix_ex1            abstract class Notification; MobileNotification (push) and WebNotification (browser)
+     |- seminarSix_ex2            Product becomes abstract; calculateDeliveryCost() becomes an abstract method
+         |- seminarSix_ex3            interface Payable; BankCard, BonusBalance (composed into Customer), GiftCard extends Product
+             |- seminarSix_ex4            (optional) interface CashbackEligible: only BankCard payments earn cashback
+```
+
+To see one exercise's solution: `git checkout seminarSix_ex3`.
+To see exactly what an exercise added: `git diff seminarSix_ex2..seminarSix_ex3`.
