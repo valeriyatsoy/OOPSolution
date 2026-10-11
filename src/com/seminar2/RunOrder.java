@@ -69,5 +69,26 @@ public class RunOrder {
         customer.removeDeliveryAddress("parents");                       // already removed
         out.println("Saved labels: " + customer.getAddressLabels());
         customer.printDeliveryAddresses();
+
+        out.println();
+        out.println("=== Payment options ===");
+        customer.addBankCard("8600 1234 5678 9012", 1500);
+        customer.getBonusBalance().addPoints(50);
+        GiftCard giftCard = new GiftCard("Gift Card 100", 100.0, "GIFT-2026");
+
+        // A GiftCard is a Product, so it can be bought like any other product
+        Order giftCardOrder = new Order("ORD-003", customer);
+        giftCardOrder.addItem(giftCard, 1);
+        giftCardOrder.printSummary();
+
+        // The variable type is the interface: it can hold ANY object that implements Payable
+        Payable byCard = customer.getBankCard();
+        Payable byBonus = customer.getBonusBalance();
+        Payable byGiftCard = giftCard;
+
+        byCard.processPayment(giftCardOrder.getTotal());
+        byBonus.processPayment(30);
+        byBonus.processPayment(500);                                   // declined
+        byGiftCard.processPayment(45.5);
     }
 }

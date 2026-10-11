@@ -1,28 +1,44 @@
-# Seminar 6, Exercise 2 -- Product becomes abstract
+# Seminar 6, Exercise 3 -- Interface Payable and three payment options
 
-**Objective:** turn an existing parent class into an abstract class and one
-of its methods into an abstract method.
+**Objective:** write an interface and three classes that realize it, one of
+which also extends a class.
 
 **What changed:**
-- `public abstract class Product` -- nobody sells "just a product": every
-  product in the shop is a `PhysicalProduct` or a `DigitalProduct` (or one of
-  their subclasses). `new Product(...)` no longer compiles; nothing in the
-  project created a plain `Product`, so nothing breaks.
-- `public abstract double calculateDeliveryCost();` -- the flat 5.0 fee is
-  gone: there is no sensible default, so each subclass must give its own.
-- The rest of `Product` (fields, both constructors, getters/setters,
-  `getPriceWithTax()`, `deliver()`, `roundToTwoDecimals()`) stays exactly the
-  same: an abstract class can mix normal and abstract methods.
-- No other file changed. `PhysicalProduct` and `DigitalProduct` already
-  override `calculateDeliveryCost()` (Seminar 3), so they compile. `EBook`,
-  `SoftwareLicense`, `ElectronicDevice` and `Clothing` inherit an
-  implementation from their parents.
+- New interface `Payable` with one method:
+  `boolean processPayment(double amount);`
+- Three realizations (`implements Payable`), each with its own rules:
+  - `BankCard` -- `cardNumber`, `holderName`, `balance`; `getMaskedNumber()`
+    shows `**** 9012`; a payment is declined when the card has not enough
+    money.
+  - `BonusBalance` -- `points`, `addPoints(double)`; pays with bonus points,
+    declined when there are not enough points.
+  - `GiftCard extends Product implements Payable` -- a gift card can be
+    bought (it is a product) and can pay (it is payable). Because `Product`
+    is abstract since Ex2, `GiftCard` must implement
+    `calculateDeliveryCost()` (0.0, sent by e-mail). It also overrides
+    `getPriceWithTax()` (no VAT on gift cards). Its `balance` starts at its
+    price.
+- `Customer` -- composition: it creates and owns its payment methods.
+  - `private BonusBalance bonusBalance = new BonusBalance(0);` + getter
+  - `private BankCard bankCard;` + getter and
+    `addBankCard(String cardNumber, double balance)`, which creates the card
+    with the customer's name as the holder.
+- `RunOrder` -- new section "Payment options": Aziz gets a card and 50 bonus
+  points, buys a gift card in ORD-003, and then pays through three variables
+  of the interface type `Payable`.
 
-**Try it:** comment out `calculateDeliveryCost()` in `DigitalProduct` --
-the compiler reports *DigitalProduct is not abstract and does not override
-abstract method calculateDeliveryCost() in Product*. Put the method back.
+**Run it:** run `RunOrder.main()` -- the end of the output is
 
-**Run it:** `RunOrder.main()` and `Main.main()` print exactly the same output
-as on `seminarSix_ex1`.
+```
+=== Payment options ===
+Order ORD-003 for Aziz Karimov
+  1 x Gift Card 100 @ 100.0 = 100.0
+...
+Total to pay: 100.0
+Paid 100.0 by bank card **** 9012. Money left on the card: 1400.0
+Paid 30.0 with bonus points. Points left: 20.0
+Payment declined: only 20.0 bonus points available.
+Paid 45.5 with gift card GIFT-2026. Left on the card: 54.5
+```
 
-**Next:** `seminarSix_ex3` adds the `Payable` interface.
+**Next:** `seminarSix_ex4` (optional) adds the `CashbackEligible` interface.

@@ -14,6 +14,9 @@ public class Customer {
     // A Map stores label -> address pairs, e.g. "home" -> ..., "office" -> ...
     // Each label (key) is unique. LinkedHashMap also remembers the order of adding.
     private Map<String, ShippingAddress> deliveryAddresses = new LinkedHashMap<>();
+    // Composition: the customer creates its own payment methods and owns them.
+    private BonusBalance bonusBalance = new BonusBalance(0);
+    private BankCard bankCard;
 
     public Customer(String name, int loyaltyPoints, double accountBalance) {
         this.name = name;
@@ -56,6 +59,19 @@ public class Customer {
 
     public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public BonusBalance getBonusBalance() {
+        return bonusBalance;
+    }
+
+    public BankCard getBankCard() {
+        return bankCard;
+    }
+
+    // The customer creates the card itself (composition); the holder is the customer.
+    public void addBankCard(String cardNumber, double balance) {
+        bankCard = new BankCard(cardNumber, getName(), balance);
     }
 
 
