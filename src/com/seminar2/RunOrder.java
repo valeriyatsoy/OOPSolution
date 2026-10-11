@@ -90,5 +90,11 @@ public class RunOrder {
         byBonus.processPayment(30);
         byBonus.processPayment(500);                                   // declined
         byGiftCard.processPayment(45.5);
+
+        out.println();
+        out.println("=== Cashback ===");
+        customer.pay(byCard, 250);         // BankCard is CashbackEligible: 1% cashback
+        customer.pay(byGiftCard, 20);      // GiftCard is not: no cashback
+        customer.pay(byBonus, 12.5);       // pays with points, including the cashback just earned
     }
 }

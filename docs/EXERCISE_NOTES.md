@@ -1,44 +1,33 @@
-# Seminar 6, Exercise 3 -- Interface Payable and three payment options
+# Seminar 6, Exercise 4 (optional) -- Interface CashbackEligible
 
-**Objective:** write an interface and three classes that realize it, one of
-which also extends a class.
+**Objective:** let one class implement two interfaces, and check at run time
+whether an object implements an interface.
 
 **What changed:**
-- New interface `Payable` with one method:
-  `boolean processPayment(double amount);`
-- Three realizations (`implements Payable`), each with its own rules:
-  - `BankCard` -- `cardNumber`, `holderName`, `balance`; `getMaskedNumber()`
-    shows `**** 9012`; a payment is declined when the card has not enough
-    money.
-  - `BonusBalance` -- `points`, `addPoints(double)`; pays with bonus points,
-    declined when there are not enough points.
-  - `GiftCard extends Product implements Payable` -- a gift card can be
-    bought (it is a product) and can pay (it is payable). Because `Product`
-    is abstract since Ex2, `GiftCard` must implement
-    `calculateDeliveryCost()` (0.0, sent by e-mail). It also overrides
-    `getPriceWithTax()` (no VAT on gift cards). Its `balance` starts at its
-    price.
-- `Customer` -- composition: it creates and owns its payment methods.
-  - `private BonusBalance bonusBalance = new BonusBalance(0);` + getter
-  - `private BankCard bankCard;` + getter and
-    `addBankCard(String cardNumber, double balance)`, which creates the card
-    with the customer's name as the holder.
-- `RunOrder` -- new section "Payment options": Aziz gets a card and 50 bonus
-  points, buys a gift card in ORD-003, and then pays through three variables
-  of the interface type `Payable`.
+- New interface `CashbackEligible` with one method:
+  `double calculateCashback(double amount);`
+- `BankCard implements Payable, CashbackEligible` -- `calculateCashback()`
+  returns 1% of the amount, rounded to two decimals. `BonusBalance` and
+  `GiftCard` do not implement it: paying with points or a gift card gives no
+  cashback.
+- `Customer` -- new method `boolean pay(Payable paymentMethod, double amount)`.
+  It calls `processPayment()`, and only if the payment succeeded **and**
+  `paymentMethod instanceof CashbackEligible eligible`, it adds the cashback
+  to the customer's `BonusBalance`. (`instanceof` with a variable name --
+  pattern matching -- needs Java 16+; the project uses JDK 18.)
+- `RunOrder` -- new section "Cashback": pays 250 by card (2.5 cashback),
+  20 with the gift card (no cashback), and 12.5 with bonus points, which
+  include the cashback just earned.
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Payment options ===
-Order ORD-003 for Aziz Karimov
-  1 x Gift Card 100 @ 100.0 = 100.0
-...
-Total to pay: 100.0
-Paid 100.0 by bank card **** 9012. Money left on the card: 1400.0
-Paid 30.0 with bonus points. Points left: 20.0
-Payment declined: only 20.0 bonus points available.
-Paid 45.5 with gift card GIFT-2026. Left on the card: 54.5
+=== Cashback ===
+Paid 250.0 by bank card **** 9012. Money left on the card: 1150.0
+Cashback 2.5 added. Bonus points: 22.5
+Paid 20.0 with gift card GIFT-2026. Left on the card: 34.5
+Paid 12.5 with bonus points. Points left: 10.0
 ```
 
-**Next:** `seminarSix_ex4` (optional) adds the `CashbackEligible` interface.
+**This is the final branch** -- `seminarSix_ex1` through `seminarSix_ex4`
+together walk through the whole of Seminar 6 (Abstraction).

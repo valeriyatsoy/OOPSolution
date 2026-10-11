@@ -1,6 +1,7 @@
 package com.seminar2;
 
-public class BankCard implements Payable {
+// A class can implement several interfaces, separated by commas.
+public class BankCard implements Payable, CashbackEligible {
 
     private String cardNumber;
     private String holderName;
@@ -39,5 +40,11 @@ public class BankCard implements Payable {
         System.out.println("Paid " + amount + " by bank card " + getMaskedNumber()
                 + ". Money left on the card: " + getBalance());
         return true;
+    }
+
+    // Required by the CashbackEligible interface: 1% of every card payment
+    @Override
+    public double calculateCashback(double amount) {
+        return Math.round(amount * 0.01 * 100.0) / 100.0;
     }
 }

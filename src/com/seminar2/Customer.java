@@ -74,6 +74,18 @@ public class Customer {
         bankCard = new BankCard(cardNumber, getName(), balance);
     }
 
+    // Pays with any payment method. Only CashbackEligible methods earn cashback,
+    // and the cashback goes to the customer's bonus balance.
+    public boolean pay(Payable paymentMethod, double amount) {
+        boolean paid = paymentMethod.processPayment(amount);
+        if (paid && paymentMethod instanceof CashbackEligible eligible) {
+            double cashback = eligible.calculateCashback(amount);
+            bonusBalance.addPoints(cashback);
+            System.out.println("Cashback " + cashback + " added. Bonus points: " + bonusBalance.getPoints());
+        }
+        return paid;
+    }
+
 
     public void addDeliveryAddress(String label, ShippingAddress address) {
         if (deliveryAddresses.containsKey(label)) {
