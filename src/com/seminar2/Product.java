@@ -1,6 +1,9 @@
 package com.seminar2;
 
-public class Product {
+// Product is abstract: there is no "just a product" in the shop, only physical
+// or digital ones. We cannot write new Product(...), but subclasses still use
+// its fields, constructors and methods.
+public abstract class Product {
 
     private String name;
     private double price;
@@ -73,7 +76,6 @@ public class Product {
         System.out.println("Delivering " + name + " to the customer.");
     }
 
-    public double calculateDeliveryCost() {
-        return 5.0; // standard flat delivery fee
-    }
+    // Abstract method: every concrete subclass must implement it.
+    public abstract double calculateDeliveryCost();
 }

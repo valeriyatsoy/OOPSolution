@@ -1,28 +1,28 @@
-# Seminar 6, Exercise 1 -- Abstract class Notification
+# Seminar 6, Exercise 2 -- Product becomes abstract
 
-**Objective:** write an abstract class with an abstract method and two
-concrete subclasses that implement it.
+**Objective:** turn an existing parent class into an abstract class and one
+of its methods into an abstract method.
 
 **What changed:**
-- New abstract class `Notification`: private fields `customer` and
-  `message`, a constructor, getters, and the abstract method
-  `public abstract void send();` -- no body, every subclass decides how the
-  message is sent.
-- New class `MobileNotification extends Notification` (extra field
-  `deviceName`): `send()` prints a push message to the customer's phone.
-- New class `WebNotification extends Notification` (extra field `browser`):
-  `send()` prints a browser notification.
-- `RunOrder` creates both notifications right after `order.printSummary()`.
-  The variables have the type `Notification`; the objects are the concrete
-  subclasses. A commented-out line shows that `new Notification(...)` does
-  not compile.
+- `public abstract class Product` -- nobody sells "just a product": every
+  product in the shop is a `PhysicalProduct` or a `DigitalProduct` (or one of
+  their subclasses). `new Product(...)` no longer compiles; nothing in the
+  project created a plain `Product`, so nothing breaks.
+- `public abstract double calculateDeliveryCost();` -- the flat 5.0 fee is
+  gone: there is no sensible default, so each subclass must give its own.
+- The rest of `Product` (fields, both constructors, getters/setters,
+  `getPriceWithTax()`, `deliver()`, `roundToTwoDecimals()`) stays exactly the
+  same: an abstract class can mix normal and abstract methods.
+- No other file changed. `PhysicalProduct` and `DigitalProduct` already
+  override `calculateDeliveryCost()` (Seminar 3), so they compile. `EBook`,
+  `SoftwareLicense`, `ElectronicDevice` and `Clothing` inherit an
+  implementation from their parents.
 
-**Run it:** run `RunOrder.main()` -- after the summary of ORD-001:
+**Try it:** comment out `calculateDeliveryCost()` in `DigitalProduct` --
+the compiler reports *DigitalProduct is not abstract and does not override
+abstract method calculateDeliveryCost() in Product*. Put the method back.
 
-```
-=== Notifications ===
-Push notification to Aziz Karimov's iPhone 15: Order ORD-001 is waiting for payment: 2083.01
-Browser notification in Chrome for Aziz Karimov: Order ORD-001 is waiting for payment: 2083.01
-```
+**Run it:** `RunOrder.main()` and `Main.main()` print exactly the same output
+as on `seminarSix_ex1`.
 
-**Next:** `seminarSix_ex2` makes `Product` abstract.
+**Next:** `seminarSix_ex3` adds the `Payable` interface.
