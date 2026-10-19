@@ -33,4 +33,23 @@ public abstract class Notification {
     public boolean canSendAt(LocalTime time) {
         return true;
     }
+
+    // Overloading: three methods called send, each with a different parameter list.
+    //   send()                         - abstract, sends right now (each subclass decides HOW)
+    //   send(LocalTime)                - sends only if this channel allows it at that time
+    //   send(LocalTime, boolean)       - urgent notifications ignore quiet hours
+
+    public boolean send(LocalTime now) {
+        return send(now, false);        // a normal notification is not urgent
+    }
+
+    public boolean send(LocalTime now, boolean urgent) {
+        if (urgent || canSendAt(now)) {
+            send();                     // the subclass's version runs
+            return true;
+        }
+        System.out.println("Postponed (quiet hours at " + now + "): notification for "
+                + customer.getName());
+        return false;
+    }
 }

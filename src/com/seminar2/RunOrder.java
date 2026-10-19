@@ -107,5 +107,16 @@ public class RunOrder {
         out.println("Push at " + lateNight + ": " + push.canSendAt(lateNight));   // MobileNotification's rule
         out.println("Web at " + lateNight + ": " + web.canSendAt(lateNight));     // inherited default
         out.println("Push at " + morning + ": " + push.canSendAt(morning));
+
+        out.println();
+        out.println("=== Sending with a time (overloading) ===");
+        push.send();                    // send(): no time given, sends right away
+        push.send(lateNight);           // send(LocalTime): postponed - quiet hours
+        web.send(lateNight);            // send(LocalTime): browser is fine at night
+        push.send(morning);             // send(LocalTime): sent
+
+        Notification fraudAlert = new MobileNotification(customer,
+                "Suspicious payment of 999.0 on card **** 9012. Was it you?", "iPhone 15");
+        fraudAlert.send(lateNight, true);   // send(LocalTime, boolean): urgent - ignores quiet hours
     }
 }

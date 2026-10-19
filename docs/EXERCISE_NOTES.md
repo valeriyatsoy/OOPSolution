@@ -1,35 +1,41 @@
-# Seminar 7, Exercise 1 -- Method overriding: quiet hours
+# Seminar 7, Exercise 2 -- Method overloading: sending at a given time
 
-**Objective:** override a concrete (non-abstract) method inherited from a
-superclass, and see that the object -- not the variable type -- decides which
-version runs.
+**Objective:** write several methods with the same name and different
+parameter lists, and see the compiler choose one by the arguments.
 
-**Business rule:** a push message must not wake the customer up at night
-(22:00-08:00). A browser notification only appears while the customer has the
-shop open, so it can be shown at any time.
+**Business rule:** a normal notification respects the channel's quiet hours
+(Exercise 1). An urgent one -- for example "suspicious payment on your
+card" -- must be delivered immediately, even at night.
 
 **What changed:**
-- `Notification` -- new concrete method `boolean canSendAt(LocalTime time)`.
-  The default rule: it returns `true` (send at any time).
-- `MobileNotification` -- overrides `canSendAt()` with `@Override`: returns
-  `false` during quiet hours. The interval crosses midnight, so the check is
-  `!time.isBefore(22:00) || time.isBefore(08:00)` -- with `&&` it would never be
-  true.
-- `WebNotification` -- unchanged: it inherits the default `canSendAt()`.
-  Overriding a concrete method is optional; implementing an abstract method
-  (`send()`) is not.
-- `RunOrder` -- new section "Quiet hours (overriding)".
+- `Notification` -- two new overloads of `send`, so the class now has three:
+  - `abstract void send()` -- sends right now (unchanged).
+  - `boolean send(LocalTime now)` -- a normal, non-urgent notification:
+    just calls `send(now, false)`.
+  - `boolean send(LocalTime now, boolean urgent)` -- if `urgent` or
+    `canSendAt(now)`, calls `send()` and returns `true`; otherwise prints
+    "Postponed" and returns `false`.
+- The overloads are written once, in the abstract class, but they call
+  `canSendAt()` and `send()`, which are overridden -- so each subclass's own
+  rules still apply.
+- The overloads are in `Notification`, not in the subclasses: a method that
+  exists only in `MobileNotification` cannot be called through a
+  `Notification` variable.
+- `RunOrder` -- new section "Sending with a time (overloading)" with a new
+  urgent `fraudAlert`.
 
-**Try it:** in `MobileNotification`, remove `@Override` and rename the method
-to `canSendAT`. It still compiles, but now nothing is overridden and the push
-notification can be sent at 23:30. Put `@Override` back: the compiler reports
-an error. That is what the annotation is for.
+**Overloading vs overriding:** `send()` and `send(LocalTime)` in the same
+class = overloading (same name, different parameters). `send()` in
+`Notification` and in `MobileNotification` = overriding (same signature,
+subclass). A different return type alone is not enough to overload.
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Quiet hours (overriding) ===
-Push at 23:30: false
-Web at 23:30: true
-Push at 09:15: true
+=== Sending with a time (overloading) ===
+Push notification to Aziz Karimov's iPhone 15: Order ORD-001 is waiting for payment: 2083.01
+Postponed (quiet hours at 23:30): notification for Aziz Karimov
+Browser notification in Chrome for Aziz Karimov: Order ORD-001 is waiting for payment: 2083.01
+Push notification to Aziz Karimov's iPhone 15: Order ORD-001 is waiting for payment: 2083.01
+Push notification to Aziz Karimov's iPhone 15: Suspicious payment of 999.0 on card **** 9012. Was it you?
 ```
