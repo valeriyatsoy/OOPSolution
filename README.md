@@ -95,3 +95,24 @@ seminarFour_ex5           starter: final state of Seminar 4
 
 To see one exercise's solution: `git checkout seminarSix_ex3`.
 To see exactly what an exercise added: `git diff seminarSix_ex2..seminarSix_ex3`.
+
+---
+
+# Seminar 7 -- Overriding and Overloading (companion project)
+
+Seminar 7 continues in this same project: the starter is the final Seminar 6
+state (`seminarSix_ex4`). All changes are in the `Notification` classes and in
+the new sections at the end of `RunOrder`. Each exercise has its own branch
+holding the project exactly as it should look at the end of that exercise, plus
+a `docs/EXERCISE_NOTES.md`.
+
+```
+seminarSix_ex4            starter: final state of Seminar 6
+ |- seminarSeven_ex1          overriding: canSendAt(LocalTime) - quiet hours for push notifications
+     |- seminarSeven_ex2          overloading: send(), send(LocalTime), send(LocalTime, boolean urgent)
+         |- seminarSeven_ex3          List<Notification>: send an order update to every channel, resend postponed ones
+             |- seminarSeven_ex4          (optional) instanceof: device name for postponed push notifications
+```
+
+To see one exercise's solution: `git checkout seminarSeven_ex3`.
+To see exactly what an exercise added: `git diff seminarSeven_ex2..seminarSeven_ex3`.

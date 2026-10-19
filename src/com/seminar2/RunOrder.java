@@ -1,5 +1,7 @@
 package com.seminar2;
 
+import java.time.LocalTime;
+
 import static java.lang.System.out;
 
 // A second class with a main method (a second entry point of the program):
@@ -96,5 +98,14 @@ public class RunOrder {
         customer.pay(byCard, 250);         // BankCard is CashbackEligible: 1% cashback
         customer.pay(byGiftCard, 20);      // GiftCard is not: no cashback
         customer.pay(byBonus, 12.5);       // pays with points, including the cashback just earned
+    
+        out.println();
+        out.println("=== Quiet hours (overriding) ===");
+        LocalTime lateNight = LocalTime.of(23, 30);
+        LocalTime morning = LocalTime.of(9, 15);
+        // Same call on two Notification variables - the object decides which version runs.
+        out.println("Push at " + lateNight + ": " + push.canSendAt(lateNight));   // MobileNotification's rule
+        out.println("Web at " + lateNight + ": " + web.canSendAt(lateNight));     // inherited default
+        out.println("Push at " + morning + ": " + push.canSendAt(morning));
     }
 }

@@ -1,33 +1,35 @@
-# Seminar 6, Exercise 4 (optional) -- Interface CashbackEligible
+# Seminar 7, Exercise 1 -- Method overriding: quiet hours
 
-**Objective:** let one class implement two interfaces, and check at run time
-whether an object implements an interface.
+**Objective:** override a concrete (non-abstract) method inherited from a
+superclass, and see that the object -- not the variable type -- decides which
+version runs.
+
+**Business rule:** a push message must not wake the customer up at night
+(22:00-08:00). A browser notification only appears while the customer has the
+shop open, so it can be shown at any time.
 
 **What changed:**
-- New interface `CashbackEligible` with one method:
-  `double calculateCashback(double amount);`
-- `BankCard implements Payable, CashbackEligible` -- `calculateCashback()`
-  returns 1% of the amount, rounded to two decimals. `BonusBalance` and
-  `GiftCard` do not implement it: paying with points or a gift card gives no
-  cashback.
-- `Customer` -- new method `boolean pay(Payable paymentMethod, double amount)`.
-  It calls `processPayment()`, and only if the payment succeeded **and**
-  `paymentMethod instanceof CashbackEligible eligible`, it adds the cashback
-  to the customer's `BonusBalance`. (`instanceof` with a variable name --
-  pattern matching -- needs Java 16+; the project uses JDK 18.)
-- `RunOrder` -- new section "Cashback": pays 250 by card (2.5 cashback),
-  20 with the gift card (no cashback), and 12.5 with bonus points, which
-  include the cashback just earned.
+- `Notification` -- new concrete method `boolean canSendAt(LocalTime time)`.
+  The default rule: it returns `true` (send at any time).
+- `MobileNotification` -- overrides `canSendAt()` with `@Override`: returns
+  `false` during quiet hours. The interval crosses midnight, so the check is
+  `!time.isBefore(22:00) || time.isBefore(08:00)` -- with `&&` it would never be
+  true.
+- `WebNotification` -- unchanged: it inherits the default `canSendAt()`.
+  Overriding a concrete method is optional; implementing an abstract method
+  (`send()`) is not.
+- `RunOrder` -- new section "Quiet hours (overriding)".
+
+**Try it:** in `MobileNotification`, remove `@Override` and rename the method
+to `canSendAT`. It still compiles, but now nothing is overridden and the push
+notification can be sent at 23:30. Put `@Override` back: the compiler reports
+an error. That is what the annotation is for.
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Cashback ===
-Paid 250.0 by bank card **** 9012. Money left on the card: 1150.0
-Cashback 2.5 added. Bonus points: 22.5
-Paid 20.0 with gift card GIFT-2026. Left on the card: 34.5
-Paid 12.5 with bonus points. Points left: 10.0
+=== Quiet hours (overriding) ===
+Push at 23:30: false
+Web at 23:30: true
+Push at 09:15: true
 ```
-
-**This is the final branch** -- `seminarSix_ex1` through `seminarSix_ex4`
-together walk through the whole of Seminar 6 (Abstraction).
