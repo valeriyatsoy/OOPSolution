@@ -1,41 +1,36 @@
-# Seminar 7, Exercise 2 -- Method overloading: sending at a given time
+# Seminar 7, Exercise 3 -- A collection of notifications
 
-**Objective:** write several methods with the same name and different
-parameter lists, and see the compiler choose one by the arguments.
+**Objective:** store objects of different subclasses in one
+`List<Notification>` and process them in one loop, without knowing which
+subclass each element is.
 
-**Business rule:** a normal notification respects the channel's quiet hours
-(Exercise 1). An urgent one -- for example "suspicious payment on your
-card" -- must be delivered immediately, even at night.
+**Business rule:** when an order is shipped, the customer gets the update on
+every channel they use. Push messages that fall into quiet hours are kept and
+resent when quiet hours end (08:00).
 
 **What changed:**
-- `Notification` -- two new overloads of `send`, so the class now has three:
-  - `abstract void send()` -- sends right now (unchanged).
-  - `boolean send(LocalTime now)` -- a normal, non-urgent notification:
-    just calls `send(now, false)`.
-  - `boolean send(LocalTime now, boolean urgent)` -- if `urgent` or
-    `canSendAt(now)`, calls `send()` and returns `true`; otherwise prints
-    "Postponed" and returns `false`.
-- The overloads are written once, in the abstract class, but they call
-  `canSendAt()` and `send()`, which are overridden -- so each subclass's own
-  rules still apply.
-- The overloads are in `Notification`, not in the subclasses: a method that
-  exists only in `MobileNotification` cannot be called through a
-  `Notification` variable.
-- `RunOrder` -- new section "Sending with a time (overloading)" with a new
-  urgent `fraudAlert`.
-
-**Overloading vs overriding:** `send()` and `send(LocalTime)` in the same
-class = overloading (same name, different parameters). `send()` in
-`Notification` and in `MobileNotification` = overriding (same signature,
-subclass). A different return type alone is not enough to overload.
+- `RunOrder` -- new section "Order update to every channel (collection)":
+  - `List<Notification> channels` with two `MobileNotification` and two
+    `WebNotification` objects for the same customer and the same message.
+  - A for-each loop calls `send(lateNight)` on each element. Every element
+    uses its own `canSendAt()` (overriding, Ex1) through the same overloaded
+    `send(LocalTime)` (Ex2). The ones that return `false` go into a second
+    list, `postponed`.
+  - A second loop resends the postponed notifications at 08:00. 08:00 is
+    allowed because quiet hours are "before 08:00".
+- No class files changed: a new kind of notification would work in this loop
+  without changing the loop.
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Sending with a time (overloading) ===
-Push notification to Aziz Karimov's iPhone 15: Order ORD-001 is waiting for payment: 2083.01
+=== Order update to every channel (collection) ===
 Postponed (quiet hours at 23:30): notification for Aziz Karimov
-Browser notification in Chrome for Aziz Karimov: Order ORD-001 is waiting for payment: 2083.01
-Push notification to Aziz Karimov's iPhone 15: Order ORD-001 is waiting for payment: 2083.01
-Push notification to Aziz Karimov's iPhone 15: Suspicious payment of 999.0 on card **** 9012. Was it you?
+Browser notification in Chrome for Aziz Karimov: Order ORD-002 has been shipped
+Postponed (quiet hours at 23:30): notification for Aziz Karimov
+Browser notification in Safari for Aziz Karimov: Order ORD-002 has been shipped
+Sent: 2, postponed: 2
+--- 08:00: resending postponed notifications ---
+Push notification to Aziz Karimov's iPhone 15: Order ORD-002 has been shipped
+Push notification to Aziz Karimov's iPad Air: Order ORD-002 has been shipped
 ```

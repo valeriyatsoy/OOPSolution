@@ -1,6 +1,8 @@
 package com.seminar2;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -118,5 +120,31 @@ public class RunOrder {
         Notification fraudAlert = new MobileNotification(customer,
                 "Suspicious payment of 999.0 on card **** 9012. Was it you?", "iPhone 15");
         fraudAlert.send(lateNight, true);   // send(LocalTime, boolean): urgent - ignores quiet hours
+
+        out.println();
+        out.println("=== Order update to every channel (collection) ===");
+        String update = "Order " + giftOrder.getOrderId() + " has been shipped";
+        // One list for all channels: the element type is the abstract class.
+        List<Notification> channels = new ArrayList<>();
+        channels.add(new MobileNotification(customer, update, "iPhone 15"));
+        channels.add(new WebNotification(customer, update, "Chrome"));
+        channels.add(new MobileNotification(customer, update, "iPad Air"));
+        channels.add(new WebNotification(customer, update, "Safari"));
+
+        List<Notification> postponed = new ArrayList<>();
+        // The loop does not know which subclass each element is - polymorphism.
+        for (Notification notification : channels) {
+            boolean sent = notification.send(lateNight);
+            if (!sent) {
+                postponed.add(notification);
+            }
+        }
+        out.println("Sent: " + (channels.size() - postponed.size()) + ", postponed: " + postponed.size());
+
+        LocalTime quietHoursEnd = LocalTime.of(8, 0);
+        out.println("--- " + quietHoursEnd + ": resending postponed notifications ---");
+        for (Notification notification : postponed) {
+            notification.send(quietHoursEnd);
+        }
     }
 }
