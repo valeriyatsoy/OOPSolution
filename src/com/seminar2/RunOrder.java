@@ -142,6 +142,15 @@ public class RunOrder {
         out.println("Sent: " + (channels.size() - postponed.size()) + ", postponed: " + postponed.size());
 
         LocalTime quietHoursEnd = LocalTime.of(8, 0);
+        // deviceName exists only in MobileNotification, so we check the type
+        // and get a MobileNotification variable (pattern matching, Java 16+).
+        for (Notification notification : postponed) {
+            if (notification instanceof MobileNotification mobile) {
+                out.println("Will be delivered to " + mobile.getDeviceName() + " at " + quietHoursEnd);
+            } else {
+                out.println("Will be delivered at " + quietHoursEnd);
+            }
+        }
         out.println("--- " + quietHoursEnd + ": resending postponed notifications ---");
         for (Notification notification : postponed) {
             notification.send(quietHoursEnd);

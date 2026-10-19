@@ -1,36 +1,38 @@
-# Seminar 7, Exercise 3 -- A collection of notifications
+# Seminar 7, Exercise 4 (optional) -- instanceof for a subclass-only field
 
-**Objective:** store objects of different subclasses in one
-`List<Notification>` and process them in one loop, without knowing which
-subclass each element is.
+**Objective:** use `instanceof` when you really need something that exists
+only in one subclass -- and see why overriding is the better tool for
+everything else.
 
-**Business rule:** when an order is shipped, the customer gets the update on
-every channel they use. Push messages that fall into quiet hours are kept and
-resent when quiet hours end (08:00).
+**Business rule:** for each postponed notification, tell the customer which
+device it will be delivered to and when.
 
 **What changed:**
-- `RunOrder` -- new section "Order update to every channel (collection)":
-  - `List<Notification> channels` with two `MobileNotification` and two
-    `WebNotification` objects for the same customer and the same message.
-  - A for-each loop calls `send(lateNight)` on each element. Every element
-    uses its own `canSendAt()` (overriding, Ex1) through the same overloaded
-    `send(LocalTime)` (Ex2). The ones that return `false` go into a second
-    list, `postponed`.
-  - A second loop resends the postponed notifications at 08:00. 08:00 is
-    allowed because quiet hours are "before 08:00".
-- No class files changed: a new kind of notification would work in this loop
-  without changing the loop.
+- `RunOrder` -- in the "Order update to every channel" section, a loop over
+  `postponed`: `if (notification instanceof MobileNotification mobile)` prints
+  `mobile.getDeviceName()`. `getDeviceName()` does not exist in
+  `Notification`, so it cannot be called through a `Notification` variable
+  without the check. (`instanceof` with a variable name -- pattern matching --
+  needs Java 16+; the project uses JDK 18.)
+- `instanceof` is an operator, not a method.
+
+**Discussion:** why not check the quiet hours in the loop with `instanceof`
+(`if (n instanceof MobileNotification && ...)`) instead of overriding
+`canSendAt()`? Every new kind of notification (SMS, email, Telegram) would mean
+editing every such loop. With overriding, the new class brings its own rule and
+the loop stays the same. Use `instanceof` only for things that really belong
+to one subclass.
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Order update to every channel (collection) ===
-Postponed (quiet hours at 23:30): notification for Aziz Karimov
-Browser notification in Chrome for Aziz Karimov: Order ORD-002 has been shipped
-Postponed (quiet hours at 23:30): notification for Aziz Karimov
-Browser notification in Safari for Aziz Karimov: Order ORD-002 has been shipped
 Sent: 2, postponed: 2
+Will be delivered to iPhone 15 at 08:00
+Will be delivered to iPad Air at 08:00
 --- 08:00: resending postponed notifications ---
 Push notification to Aziz Karimov's iPhone 15: Order ORD-002 has been shipped
 Push notification to Aziz Karimov's iPad Air: Order ORD-002 has been shipped
 ```
+
+**This is the final branch** -- `seminarSeven_ex1` through `seminarSeven_ex4`
+together walk through the whole of Seminar 7 (Overriding and Overloading).
