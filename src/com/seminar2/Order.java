@@ -26,8 +26,9 @@ public class Order {
 
     public void addItem(Product product, int quantity) {
         if (quantity <= 0) {
-            System.out.println("Quantity must be positive - item was not added.");
-            return;
+            // Instead of printing a message and quietly returning, we throw:
+            // the caller cannot miss the problem and decides what to do with it.
+            throw new IllegalArgumentException("Quantity must be positive, but was " + quantity);
         }
         // Composition: the order creates its own OrderItem objects.
         items.add(new OrderItem(product, quantity));

@@ -30,8 +30,13 @@ public class RunOrder {
         Order order = new Order("ORD-001", customer);
         order.addItem(laptop, 2);
         order.addItem(course, 1);
-        order.addItem(course, 0);      // rejected
-        order.printSummary();
+        try {
+            order.addItem(course, 0);  // throws IllegalArgumentException
+        } catch (IllegalArgumentException e) {
+            out.println("Item was not added: " + e.getMessage());
+        } finally {
+            order.printSummary();      // finally always runs - with or without an exception
+        }
 
         out.println();
         out.println("=== Notifications ===");
