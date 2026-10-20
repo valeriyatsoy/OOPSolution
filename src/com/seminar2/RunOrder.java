@@ -155,5 +155,18 @@ public class RunOrder {
         for (Notification notification : postponed) {
             notification.send(quietHoursEnd);
         }
+
+        out.println();
+        out.println("=== NullPointerException ===");
+        // out.println("Dacha city: " + customer.getDeliveryAddress("dacha").getCity());
+        // ^ crashes: there is no "dacha" address, getDeliveryAddress() returns null,
+        //   and calling getCity() on null throws a NullPointerException.
+        // This is a bug to FIX (check for null first), not an exception to catch.
+        ShippingAddress dacha = customer.getDeliveryAddress("dacha");
+        if (dacha != null) {
+            out.println("Dacha city: " + dacha.getCity());
+        } else {
+            out.println("There is no address called \"dacha\".");
+        }
     }
 }

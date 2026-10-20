@@ -116,3 +116,23 @@ seminarSix_ex4            starter: final state of Seminar 6
 
 To see one exercise's solution: `git checkout seminarSeven_ex3`.
 To see exactly what an exercise added: `git diff seminarSeven_ex2..seminarSeven_ex3`.
+
+# Seminar 8 -- Exceptions (companion project)
+
+Seminar 8 continues in this same project: the starter is the final Seminar 7
+state (`seminarSeven_ex4`). Exercise 1 (debugger walkthrough over the
+notification loop) changes no code, so it has no branch. All other changes are
+in `Order`, the new `InsufficientBalanceException` and the new sections at the
+end of `RunOrder`. Each branch holds the project exactly as it should look at
+the end of that exercise, plus a `docs/EXERCISE_NOTES.md`.
+
+```
+seminarSeven_ex4          starter: final state of Seminar 7 (Ex1 - debugger - runs on it, no code changes)
+ |- seminarEight_ex2          NullPointerException on a missing delivery address - fixed with a null check
+     |- seminarEight_ex3          catch NumberFormatException when a quantity arrives as text
+         |- seminarEight_ex4          (optional) Order.addItem() throws IllegalArgumentException; try/catch/finally
+             |- seminarEight_ex5          (optional) checked InsufficientBalanceException thrown by Order.place()
+```
+
+To see one exercise's solution: `git checkout seminarEight_ex3`.
+To see exactly what an exercise added: `git diff seminarEight_ex2..seminarEight_ex3`.
