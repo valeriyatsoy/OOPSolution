@@ -1,29 +1,33 @@
-# Seminar 8, Exercise 4 (optional) -- Throw an exception on purpose
+# Seminar 8, Exercise 5 (optional) -- Create your own exception
 
-**Objective:** replace a silent failure (print + return) with `throw`, and use
-`try` / `catch` / `finally`.
+**Objective:** create a custom *checked* exception and see how the compiler
+forces every caller to handle it.
+
+**Business rule:** an order can be placed only if the customer has enough money
+on the account; otherwise nothing is charged.
 
 **What changed:**
-- `Order.addItem()` -- for `quantity <= 0` it now throws
-  `IllegalArgumentException("Quantity must be positive, but was " + quantity)`
-  instead of printing a message and returning. The caller cannot miss it.
-- `RunOrder` -- `order.addItem(course, 0)` is wrapped in `try` / `catch`;
-  `order.printSummary()` moved into `finally`, so it runs whether the item
-  was added or not.
+- New class `InsufficientBalanceException extends Exception` with a
+  constructor `(double needed, double available)` that builds the message.
+- `Order.place()` -- declared `throws InsufficientBalanceException`; throws it
+  when the balance is lower than the total, before charging.
+- `RunOrder` -- both existing `place()` calls are wrapped in `try`/`catch`
+  (they no longer compile without it), and a new section "Custom checked
+  exception" tries to place ORD-005 (1 laptop, 1020.14) with only 370.52 on
+  the account.
 
-**Discussion:** `NumberFormatException` (Exercise 3) is a subclass of
-`IllegalArgumentException`, so `catch (IllegalArgumentException e)` would
-catch it too.
+**Discussion:** why checked here and unchecked in Exercise 4? Not enough money
+is a normal business situation every caller must plan for; a zero quantity is
+a programming mistake.
 
-**Run it:** run `RunOrder.main()` -- the "Order" section prints
+**Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Order ===
-Item was not added: Quantity must be positive, but was 0
-Order ORD-001 for Aziz Karimov
-  2 x Laptop @ 1007.99 = 2015.98
-  1 x Java Basics Video Course @ 54.88 = 54.88
-...
+=== Custom checked exception ===
+Balance: 370.52, order total: 1020.14
+Order was not placed: Not enough money on the account: needed 1020.14, available 370.52
+Balance after the attempt: 370.52
 ```
 
-**Next:** `seminarEight_ex5` (optional) -- our own checked exception.
+**This is the final branch** -- `seminarEight_ex2` through `seminarEight_ex5`
+together walk through the code of Seminar 8 (Exceptions).

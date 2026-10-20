@@ -56,8 +56,12 @@ public class Order {
     }
 
     // Business logic: placing the order charges the customer.
-    public void place() {
+    // If the balance is too low, nothing is charged and the caller gets an exception.
+    public void place() throws InsufficientBalanceException {
         double total = getTotal();
+        if (customer.getAccountBalance() < total) {
+            throw new InsufficientBalanceException(total, customer.getAccountBalance());
+        }
         customer.setAccountBalance(customer.getAccountBalance() - total);
         System.out.println("Order " + orderId + " placed. " + total + " was charged.");
     }

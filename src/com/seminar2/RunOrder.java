@@ -52,7 +52,11 @@ public class RunOrder {
         out.println("=== Placing the order ===");
         customer.setAccountBalance(customer.getAccountBalance() + 2500); // the customer tops up
         out.println("Balance before paying: " + customer.getAccountBalance());
-        order.place();
+        try {
+            order.place();
+        } catch (InsufficientBalanceException e) {
+            out.println("Order was not placed: " + e.getMessage());
+        }
         out.println("Balance after paying: " + customer.getAccountBalance());
 
         out.println();
@@ -71,7 +75,11 @@ public class RunOrder {
 
         Order giftOrder = new Order("ORD-002", customer);
         giftOrder.addItem(jacket, 1);
-        giftOrder.place();
+        try {
+            giftOrder.place();
+        } catch (InsufficientBalanceException e) {
+            out.println("Order was not placed: " + e.getMessage());
+        }
         giftOrder.printSummary();                                        // ships to the office
 
         customer.removeDeliveryAddress("parents");
@@ -190,5 +198,18 @@ public class RunOrder {
             }
         }
         textOrder.printSummary();
+
+        out.println();
+        out.println("=== Custom checked exception ===");
+        Order bigOrder = new Order("ORD-005", customer);
+        bigOrder.addItem(laptop, 1);
+        out.println("Balance: " + customer.getAccountBalance() + ", order total: " + bigOrder.getTotal());
+        try {
+            bigOrder.place();
+            out.println("Order placed.");
+        } catch (InsufficientBalanceException e) {
+            out.println("Order was not placed: " + e.getMessage());
+        }
+        out.println("Balance after the attempt: " + customer.getAccountBalance());   // unchanged
     }
 }
