@@ -168,5 +168,22 @@ public class RunOrder {
         } else {
             out.println("There is no address called \"dacha\".");
         }
+
+        out.println();
+        out.println("=== Catching an exception ===");
+        // Quantities often arrive as text (a form field, a file), and not every text is a number.
+        List<String> quantityInputs = List.of("2", "two");
+        Order textOrder = new Order("ORD-004", customer);
+        for (String input : quantityInputs) {
+            try {
+                int quantity = Integer.parseInt(input);   // throws NumberFormatException for "two"
+                textOrder.addItem(jacket, quantity);
+                out.println("Added " + quantity + " x " + jacket.getName());
+            } catch (NumberFormatException e) {
+                out.println("\"" + input + "\" is not a number - item was not added.");
+                out.println("Exception message: " + e.getMessage());
+            }
+        }
+        textOrder.printSummary();
     }
 }

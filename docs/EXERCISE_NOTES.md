@@ -1,25 +1,30 @@
-# Seminar 8, Exercise 2 -- Find and fix a NullPointerException
+# Seminar 8, Exercise 3 -- Catch an exception thrown by Java
 
-**Objective:** read a stack trace, find the cause with the debugger, and fix
-the bug instead of catching the exception.
+**Objective:** catch an exception that a library method throws for bad input,
+and let the program continue.
+
+**Business rule:** quantities arrive as text (a form field, a file). Text that
+is not a number must not stop the program -- the item is simply not added.
 
 **What changed:**
-- `RunOrder` -- new section "NullPointerException" at the end of `main()`.
-  The original line (kept as a comment)
-  `customer.getDeliveryAddress("dacha").getCity()` crashes: there is no
-  "dacha" label, `getDeliveryAddress()` returns `null`, and calling
-  `getCity()` on `null` throws a `NullPointerException`.
-- Fix: the result is stored in a `ShippingAddress` variable and `getCity()`
-  is called only if it is not `null`.
-
-**Discussion:** a `NullPointerException` is almost always a bug. Catching it
-would hide the bug; checking for `null` (or not returning `null`) fixes it.
+- `RunOrder` -- new section "Catching an exception": a `List<String>` of
+  inputs `"2"` and `"two"`, and order ORD-004. In the loop,
+  `Integer.parseInt(input)` throws `NumberFormatException` for `"two"`; the
+  `try`/`catch` prints a message and `e.getMessage()` and the loop goes on.
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== NullPointerException ===
-There is no address called "dacha".
+=== Catching an exception ===
+Added 2 x Winter Jacket
+"two" is not a number - item was not added.
+Exception message: For input string: "two"
+Order ORD-004 for Aziz Karimov
+  2 x Winter Jacket @ 89.04 = 178.08
+Items total: 178.08
+Delivery: 3.0
+Total to pay: 181.08
+Ship to: 8 Shota Rustaveli St, Tashkent 100070
 ```
 
-**Next:** `seminarEight_ex3` -- catching an exception thrown by Java.
+**Next:** `seminarEight_ex4` (optional) -- throwing an exception on purpose.
