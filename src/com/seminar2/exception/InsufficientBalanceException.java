@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.exception;
 
 // Our own exception type. It extends Exception (not RuntimeException), so it is
 // CHECKED: every method that throws it must say "throws InsufficientBalanceException",

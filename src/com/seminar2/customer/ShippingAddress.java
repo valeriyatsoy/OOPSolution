@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.customer;
 
 public class ShippingAddress {
 

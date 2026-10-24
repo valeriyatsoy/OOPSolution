@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.payment;
 
 // A class can implement several interfaces, separated by commas.
 public class BankCard implements Payable, CashbackEligible {

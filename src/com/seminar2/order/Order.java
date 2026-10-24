@@ -1,4 +1,8 @@
-package com.seminar2;
+package com.seminar2.order;
+
+import com.seminar2.customer.Customer;
+import com.seminar2.exception.InsufficientBalanceException;
+import com.seminar2.product.Product;
 
 import java.util.ArrayList;
 import java.util.List;

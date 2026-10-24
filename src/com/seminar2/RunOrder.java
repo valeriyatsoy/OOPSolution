@@ -1,5 +1,18 @@
 package com.seminar2;
 
+import com.seminar2.customer.Customer;
+import com.seminar2.customer.ShippingAddress;
+import com.seminar2.exception.InsufficientBalanceException;
+import com.seminar2.notification.MobileNotification;
+import com.seminar2.notification.Notification;
+import com.seminar2.notification.WebNotification;
+import com.seminar2.order.Order;
+import com.seminar2.payment.Payable;
+import com.seminar2.product.Clothing;
+import com.seminar2.product.DigitalProduct;
+import com.seminar2.product.GiftCard;
+import com.seminar2.product.PhysicalProduct;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,6 @@
-package com.seminar2;
+package com.seminar2.notification;
+
+import com.seminar2.customer.Customer;
 
 import java.time.LocalTime;
 

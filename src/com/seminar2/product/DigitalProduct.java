@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.product;
 
 public class DigitalProduct extends Product {
 

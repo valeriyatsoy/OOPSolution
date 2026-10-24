@@ -1,4 +1,6 @@
-package com.seminar2;
+package com.seminar2.product;
+
+import com.seminar2.payment.Payable;
 
 // A gift card IS-A Product (it can be bought and presented to another person)
 // and it CAN pay (Payable). A class extends only one class,

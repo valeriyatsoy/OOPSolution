@@ -1,4 +1,6 @@
-package com.seminar2;
+package com.seminar2.order;
+
+import com.seminar2.product.Product;
 
 // Composition: an OrderItem HAS-A Product and a quantity.
 // It is not a kind of product (no "extends"), it only refers to one.

@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.product;
 
 // Product is abstract: there is no "just a product" in the shop, only physical
 // or digital ones. We cannot write new Product(...), but subclasses still use

@@ -1,33 +1,36 @@
-# Seminar 8, Exercise 5 (optional) -- Create your own exception
+# Seminar 10, Exercise 1 -- Organise the project into packages
 
-**Objective:** create a custom *checked* exception and see how the compiler
-forces every caller to handle it.
+**Objective:** group related classes into packages (folders) before the
+project grows further -- the same structure you will want in the coursework.
 
-**Business rule:** an order can be placed only if the customer has enough money
-on the account; otherwise nothing is charged.
-
-**What changed:**
-- New class `InsufficientBalanceException extends Exception` with a
-  constructor `(double needed, double available)` that builds the message.
-- `Order.place()` -- declared `throws InsufficientBalanceException`; throws it
-  when the balance is lower than the total, before charging.
-- `RunOrder` -- both existing `place()` calls are wrapped in `try`/`catch`
-  (they no longer compile without it), and a new section "Custom checked
-  exception" tries to place ORD-005 (1 laptop, 1020.14) with only 370.52 on
-  the account.
-
-**Discussion:** why checked here and unchecked in Exercise 4? Not enough money
-is a normal business situation every caller must plan for; a zero quantity is
-a programming mistake.
-
-**Run it:** run `RunOrder.main()` -- the end of the output is
+**What changed:** no code logic changed; the classes were moved from
+`com.seminar2` into sub-packages (in IntelliJ: right-click `com.seminar2` ->
+New -> Package, then drag the classes in or use Refactor -> Move, F6).
 
 ```
-=== Custom checked exception ===
-Balance: 370.52, order total: 1020.14
-Order was not placed: Not enough money on the account: needed 1020.14, available 370.52
-Balance after the attempt: 370.52
+com.seminar2                Main, RunOrder (entry points stay at the top)
+ |- customer                Customer, ShippingAddress
+ |- exception               InsufficientBalanceException
+ |- notification            Notification, MobileNotification, WebNotification
+ |- order                   Order, OrderItem
+ |- payment                 Payable, CashbackEligible, BankCard, BonusBalance
+ |- product                 Product, PhysicalProduct, DigitalProduct, EBook,
+                            SoftwareLicense, ElectronicDevice, Clothing, GiftCard
 ```
 
-**This is the final branch** -- `seminarEight_ex2` through `seminarEight_ex5`
-together walk through the code of Seminar 8 (Exceptions).
+- The first line of every moved class is now its new package, e.g.
+  `package com.seminar2.product;`.
+- Classes that use a class from another package got `import` lines, e.g.
+  `Order` imports `com.seminar2.customer.Customer`,
+  `com.seminar2.product.Product` and
+  `com.seminar2.exception.InsufficientBalanceException`.
+
+**Discussion:** nothing broke because every class, constructor and method used
+from another package is `public`. A member without an access modifier is
+visible only inside its own package. `protected` (e.g.
+`Product.roundToTwoDecimals()`) still works in the subclasses.
+
+**Run it:** run `RunOrder.main()` and `Main.main()` -- the output is exactly
+the same as on `seminarEight_ex5`.
+
+**Next:** `seminarTen_ex2` -- Singleton: one order number generator.

@@ -1,5 +1,14 @@
 package com.seminar2;
 
+import com.seminar2.customer.Customer;
+import com.seminar2.customer.ShippingAddress;
+import com.seminar2.product.Clothing;
+import com.seminar2.product.DigitalProduct;
+import com.seminar2.product.EBook;
+import com.seminar2.product.ElectronicDevice;
+import com.seminar2.product.PhysicalProduct;
+import com.seminar2.product.SoftwareLicense;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("=== PhysicalProduct ===");

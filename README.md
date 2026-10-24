@@ -136,3 +136,24 @@ seminarSeven_ex4          starter: final state of Seminar 7 (Ex1 - debugger - ru
 
 To see one exercise's solution: `git checkout seminarEight_ex3`.
 To see exactly what an exercise added: `git diff seminarEight_ex2..seminarEight_ex3`.
+
+---
+
+# Seminar 10 -- Packages and Creational Design Patterns: Singleton and Factory Method (companion project)
+
+Seminar 10 continues in this same project (Week 9 was the test, with no
+coding): the starter is the final Seminar 8 state (`seminarEight_ex5`). The
+class diagram for the starter is `OOP_Week10_UML_ClassDiagram_Starter.drawio`.
+Each exercise has its own branch holding the project exactly as it should look
+at the end of that exercise, plus a `docs/EXERCISE_NOTES.md`.
+
+```
+seminarEight_ex5          starter: final state of Seminar 8
+ |- seminarTen_ex1            packages: classes moved into customer, exception, notification, order, payment, product
+     |- seminarTen_ex2            Singleton: OrderNumberGenerator gives every new order a unique number
+         |- seminarTen_ex3            Factory Method: NotificationChannel creators (Mobile, Web, Sms) create the notifications
+```
+
+To see one exercise's solution: `git checkout seminarTen_ex2`.
+To see exactly what an exercise added: `git diff seminarTen_ex2..seminarTen_ex3`.
+

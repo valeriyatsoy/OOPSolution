@@ -1,4 +1,9 @@
-package com.seminar2;
+package com.seminar2.customer;
+
+import com.seminar2.payment.BankCard;
+import com.seminar2.payment.BonusBalance;
+import com.seminar2.payment.CashbackEligible;
+import com.seminar2.payment.Payable;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;

@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.payment;
 
 // Bonus points collected by a customer; 1 point pays for 1 unit of money.
 public class BonusBalance implements Payable {

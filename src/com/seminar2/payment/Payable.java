@@ -1,4 +1,4 @@
-package com.seminar2;
+package com.seminar2.payment;
 
 // An interface is a contract: "whoever implements me can pay".
 // It says WHAT can be done, not HOW - every class writes its own processPayment().
