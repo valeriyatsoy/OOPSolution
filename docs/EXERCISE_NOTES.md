@@ -1,37 +1,45 @@
-# Seminar 10, Exercise 2 -- Singleton: one order number generator
+# Seminar 10, Exercise 3 -- Factory Method: notification channels
 
-**Objective:** make sure there is exactly one object of a class in the whole
-program, and that every part of the program gets that same object.
+**Objective:** stop writing `new MobileNotification(...)` / `new
+WebNotification(...)` all over `RunOrder`. A *creator* class decides which
+notification to create, and the code that sends works only with abstract types.
 
-**New feature:** every new order gets a unique number automatically --
-`ORD-006`, `ORD-007`, ... All numbers come from one shared generator, so two
-orders can never get the same number.
+**Roles (same as Logistics / Transport in the lecture):**
+- Creator -- abstract `NotificationChannel` (like `Logistics`)
+- Concrete creators -- `MobileChannel`, `WebChannel`, `SmsChannel`
+  (like `RoadLogistics`, `SeaLogistics`)
+- Factory Product -- the existing abstract `Notification` (like `Transport`).
+  Careful: the Factory Product is not our `Product` class.
+- Concrete Factory Products -- `MobileNotification`, `WebNotification`, `SmsNotification`
 
 **What changed:**
-- New class `OrderNumberGenerator` (package `order`) with the three parts of a Singleton:
-  - `private static OrderNumberGenerator instance` -- the only object;
-  - a `private` constructor -- `new OrderNumberGenerator()` does not compile
-    outside the class;
-  - `public static getInstance()` -- creates the object the first time it
-    is called (lazy initialization) and returns the same object after that.
-- `nextOrderId()` starts after the five orders that `RunOrder` already
-  creates (ORD-001 ... ORD-005): `ORD-006`, `ORD-007`, ...
-  (`String.format("ORD-%03d", ...)`).
-- `RunOrder` -- new section "Singleton: order numbers": two variables get the
-  generator through `getInstance()`, `generator1 == generator2` is `true`, and
-  two new orders get their numbers from it.
+- New abstract class `NotificationChannel` (package `notification`, like all
+  the new classes of this exercise):
+  - `createNotification(Customer, String)` -- the factory method (abstract);
+  - `notifyCustomer(customer, message, now)` -- common logic: creates the
+    notification through the factory method and calls `send(now)`, so the
+    quiet hours from Seminar 7 still apply.
+- `MobileChannel(deviceName)` and `WebChannel(browser)` override
+  `createNotification()` and return `MobileNotification` / `WebNotification`.
+- `RunOrder` -- new section "Factory Method: notification channels": a
+  `List<NotificationChannel>` sends "Order ORD-006 has been shipped" in one
+  loop that never names a concrete notification class.
+- Last step -- a new channel: `SmsNotification extends Notification` and
+  `SmsChannel extends NotificationChannel`, plus one `add(...)` line in
+  `RunOrder`.
 
-**Try it:** make the constructor `public` and give each order its own
-`new OrderNumberGenerator()` -- both orders become `ORD-006`. That is the bug
-the Singleton prevents. (Change it back afterwards.)
+**Discussion:** which existing classes had to change to add SMS? None --
+only new classes and one new line in `RunOrder` (Open/Closed principle).
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Singleton: order numbers ===
-(OrderNumberGenerator created)
-Same generator? true
-New orders: ORD-006, ORD-007
+=== Factory Method: notification channels ===
+Push notification to Aziz Karimov's iPhone 15: Order ORD-006 has been shipped
+Browser notification in Chrome for Aziz Karimov: Order ORD-006 has been shipped
+SMS to +998 90 123 45 67 for Aziz Karimov: Order ORD-006 has been shipped
 ```
 
-**Next:** `seminarTen_ex3` -- Factory Method: notification channels.
+**This is the final branch** -- `seminarTen_ex1` to `seminarTen_ex3`
+together walk through the code of Seminar 10 (packages, Singleton and
+Factory Method).

@@ -3,8 +3,12 @@ package com.seminar2;
 import com.seminar2.customer.Customer;
 import com.seminar2.customer.ShippingAddress;
 import com.seminar2.exception.InsufficientBalanceException;
+import com.seminar2.notification.MobileChannel;
 import com.seminar2.notification.MobileNotification;
 import com.seminar2.notification.Notification;
+import com.seminar2.notification.NotificationChannel;
+import com.seminar2.notification.SmsChannel;
+import com.seminar2.notification.WebChannel;
 import com.seminar2.notification.WebNotification;
 import com.seminar2.order.Order;
 import com.seminar2.order.OrderNumberGenerator;
@@ -236,5 +240,19 @@ public class RunOrder {
         Order jacketOrder = new Order(generator1.nextOrderId(), customer);
         Order courseOrder = new Order(generator2.nextOrderId(), customer);
         out.println("New orders: " + jacketOrder.getOrderId() + ", " + courseOrder.getOrderId());
+
+        out.println();
+        out.println("=== Factory Method: notification channels ===");
+        String shipped = "Order " + jacketOrder.getOrderId() + " has been shipped";
+        // The element type is the abstract creator. The loop never writes
+        // new MobileNotification(...) - each channel creates its own notification.
+        List<NotificationChannel> customerChannels = new ArrayList<>();
+        customerChannels.add(new MobileChannel("iPhone 15"));
+        customerChannels.add(new WebChannel("Chrome"));
+        customerChannels.add(new SmsChannel("+998 90 123 45 67"));   // new channel: one new line here
+
+        for (NotificationChannel channel : customerChannels) {
+            channel.notifyCustomer(customer, shipped, morning);
+        }
     }
 }
