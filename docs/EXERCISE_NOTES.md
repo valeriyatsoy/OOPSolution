@@ -1,36 +1,37 @@
-# Seminar 10, Exercise 1 -- Organise the project into packages
+# Seminar 10, Exercise 2 -- Singleton: one order number generator
 
-**Objective:** group related classes into packages (folders) before the
-project grows further -- the same structure you will want in the coursework.
+**Objective:** make sure there is exactly one object of a class in the whole
+program, and that every part of the program gets that same object.
 
-**What changed:** no code logic changed; the classes were moved from
-`com.seminar2` into sub-packages (in IntelliJ: right-click `com.seminar2` ->
-New -> Package, then drag the classes in or use Refactor -> Move, F6).
+**New feature:** every new order gets a unique number automatically --
+`ORD-006`, `ORD-007`, ... All numbers come from one shared generator, so two
+orders can never get the same number.
+
+**What changed:**
+- New class `OrderNumberGenerator` (package `order`) with the three parts of a Singleton:
+  - `private static OrderNumberGenerator instance` -- the only object;
+  - a `private` constructor -- `new OrderNumberGenerator()` does not compile
+    outside the class;
+  - `public static getInstance()` -- creates the object the first time it
+    is called (lazy initialization) and returns the same object after that.
+- `nextOrderId()` starts after the five orders that `RunOrder` already
+  creates (ORD-001 ... ORD-005): `ORD-006`, `ORD-007`, ...
+  (`String.format("ORD-%03d", ...)`).
+- `RunOrder` -- new section "Singleton: order numbers": two variables get the
+  generator through `getInstance()`, `generator1 == generator2` is `true`, and
+  two new orders get their numbers from it.
+
+**Try it:** make the constructor `public` and give each order its own
+`new OrderNumberGenerator()` -- both orders become `ORD-006`. That is the bug
+the Singleton prevents. (Change it back afterwards.)
+
+**Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-com.seminar2                Main, RunOrder (entry points stay at the top)
- |- customer                Customer, ShippingAddress
- |- exception               InsufficientBalanceException
- |- notification            Notification, MobileNotification, WebNotification
- |- order                   Order, OrderItem
- |- payment                 Payable, CashbackEligible, BankCard, BonusBalance
- |- product                 Product, PhysicalProduct, DigitalProduct, EBook,
-                            SoftwareLicense, ElectronicDevice, Clothing, GiftCard
+=== Singleton: order numbers ===
+(OrderNumberGenerator created)
+Same generator? true
+New orders: ORD-006, ORD-007
 ```
 
-- The first line of every moved class is now its new package, e.g.
-  `package com.seminar2.product;`.
-- Classes that use a class from another package got `import` lines, e.g.
-  `Order` imports `com.seminar2.customer.Customer`,
-  `com.seminar2.product.Product` and
-  `com.seminar2.exception.InsufficientBalanceException`.
-
-**Discussion:** nothing broke because every class, constructor and method used
-from another package is `public`. A member without an access modifier is
-visible only inside its own package. `protected` (e.g.
-`Product.roundToTwoDecimals()`) still works in the subclasses.
-
-**Run it:** run `RunOrder.main()` and `Main.main()` -- the output is exactly
-the same as on `seminarEight_ex5`.
-
-**Next:** `seminarTen_ex2` -- Singleton: one order number generator.
+**Next:** `seminarTen_ex3` -- Factory Method: notification channels.

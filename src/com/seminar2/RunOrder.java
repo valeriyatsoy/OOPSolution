@@ -7,6 +7,7 @@ import com.seminar2.notification.MobileNotification;
 import com.seminar2.notification.Notification;
 import com.seminar2.notification.WebNotification;
 import com.seminar2.order.Order;
+import com.seminar2.order.OrderNumberGenerator;
 import com.seminar2.payment.Payable;
 import com.seminar2.product.Clothing;
 import com.seminar2.product.DigitalProduct;
@@ -224,5 +225,16 @@ public class RunOrder {
             out.println("Order was not placed: " + e.getMessage());
         }
         out.println("Balance after the attempt: " + customer.getAccountBalance());   // unchanged
+
+        out.println();
+        out.println("=== Singleton: order numbers ===");
+        OrderNumberGenerator generator1 = OrderNumberGenerator.getInstance();
+        OrderNumberGenerator generator2 = OrderNumberGenerator.getInstance();
+        out.println("Same generator? " + (generator1 == generator2));
+        // OrderNumberGenerator generator3 = new OrderNumberGenerator();   // error: the constructor is private
+
+        Order jacketOrder = new Order(generator1.nextOrderId(), customer);
+        Order courseOrder = new Order(generator2.nextOrderId(), customer);
+        out.println("New orders: " + jacketOrder.getOrderId() + ", " + courseOrder.getOrderId());
     }
 }
