@@ -2,6 +2,10 @@ package com.seminar2;
 
 import com.seminar2.customer.Customer;
 import com.seminar2.customer.ShippingAddress;
+import com.seminar2.decorator.ExpressDelivery;
+import com.seminar2.decorator.GiftWrap;
+import com.seminar2.decorator.OrderCost;
+import com.seminar2.decorator.ScheduledDelivery;
 import com.seminar2.exception.InsufficientBalanceException;
 import com.seminar2.notification.MobileChannel;
 import com.seminar2.notification.MobileNotification;
@@ -18,6 +22,7 @@ import com.seminar2.product.DigitalProduct;
 import com.seminar2.product.GiftCard;
 import com.seminar2.product.PhysicalProduct;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -254,5 +259,28 @@ public class RunOrder {
         for (NotificationChannel channel : customerChannels) {
             channel.notifyCustomer(customer, shipped, morning);
         }
+
+        out.println();
+        out.println("=== Decorator: order extras ===");
+        Order birthdayOrder = new Order(generator1.nextOrderId(), customer);
+        birthdayOrder.addItem(jacket, 1);
+
+        // The variable type is the interface. We start with the plain order and
+        // wrap it in extras while the program runs - no GiftWrappedExpressOrder class needed.
+        OrderCost plain = birthdayOrder;
+        OrderCost wrapped = new GiftWrap(plain);
+        OrderCost wrappedAndExpress = new ExpressDelivery(wrapped);
+        OrderCost wrappedAndScheduled = new ScheduledDelivery(new GiftWrap(plain),
+                LocalDate.of(2026, 11, 14), "10:00-12:00");
+        // OrderCost doubleWrapped = new GiftWrap(new GiftWrap(plain));   // also allowed: the same extra twice
+
+        out.println(plain.getDescription() + ": " + plain.getTotal());
+        out.println(wrapped.getDescription() + ": " + wrapped.getTotal());
+        out.println(wrappedAndExpress.getDescription() + ": " + wrappedAndExpress.getTotal());
+        out.println(wrappedAndScheduled.getDescription() + ": " + wrappedAndScheduled.getTotal());
+
+        // The customer pays for the order WITH the extras.
+        // (birthdayOrder.place() would charge only the plain total - Order does not know about the extras.)
+        customer.pay(customer.getBankCard(), wrappedAndScheduled.getTotal());
     }
 }

@@ -157,3 +157,20 @@ seminarEight_ex5          starter: final state of Seminar 8
 To see one exercise's solution: `git checkout seminarTen_ex2`.
 To see exactly what an exercise added: `git diff seminarTen_ex2..seminarTen_ex3`.
 
+
+---
+
+# Seminar 11 -- Structural Design Patterns: Decorator and Adapter (companion project)
+
+Seminar 11 continues in this same project: the starter is the final Seminar 10
+state (`seminarTen_ex3`). Each exercise has its own branch holding the project
+exactly as it should look at the end of that exercise, plus a
+`docs/EXERCISE_NOTES.md`.
+
+```
+seminarTen_ex3            starter: final state of Seminar 10
+ |- seminarEleven_ex1         Decorator: GiftWrap, ExpressDelivery, ScheduledDelivery wrap an Order (package decorator)
+```
+
+To see one exercise's solution: `git checkout seminarEleven_ex1`.
+To see exactly what an exercise added: `git diff seminarTen_ex3..seminarEleven_ex1`.

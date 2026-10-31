@@ -4,10 +4,15 @@ import com.seminar2.customer.Customer;
 import com.seminar2.exception.InsufficientBalanceException;
 import com.seminar2.product.Product;
 
+import com.seminar2.decorator.OrderCost;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+// Decorator (Seminar 11): Order is the CONCRETE COMPONENT - the plain object that
+// the extras (GiftWrap, ExpressDelivery, ScheduledDelivery) wrap.
+// Order itself knows nothing about them.
+public class Order implements OrderCost {
 
     private String orderId;
     // Aggregation: the customer exists before and after the order.
@@ -55,6 +60,13 @@ public class Order {
         return Math.round(cost * 100.0) / 100.0;
     }
 
+    // Required by OrderCost: the plain order describes itself by its id.
+    @Override
+    public String getDescription() {
+        return "Order " + orderId;
+    }
+
+    @Override
     public double getTotal() {
         return Math.round((getItemsTotal() + getDeliveryCost()) * 100.0) / 100.0;
     }
