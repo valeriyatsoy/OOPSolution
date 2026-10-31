@@ -31,3 +31,4 @@ bin/
 
 ### IntelliJ workspace state ###
 .idea/workspace.xml
+.idea/misc.xml
