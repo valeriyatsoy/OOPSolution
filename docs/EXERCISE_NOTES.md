@@ -1,50 +1,56 @@
-# Seminar 11, Exercise 1 -- Decorator: order extras
+# Seminar 11, Exercise 2 -- Adapter: paying with an external wallet
 
-**Objective:** let the customer add optional extras to an order (gift wrap,
-express delivery, scheduled delivery) in any combination, without writing a
-class for every combination (`GiftWrappedExpressOrder`, ...) and without
-putting the extra fees inside `Order`.
+**Objective:** the shop wants to accept payments from an external mobile
+wallet. The wallet comes as a ready-made SDK class we cannot change, and its
+API does not fit our `Payable` interface. Without changing the SDK or any of
+our existing classes, we write an adapter so that the wallet can be used
+anywhere a `Payable` is expected.
 
-**Roles (same as ICoffee / CoffeeDecorator in the handout):**
-- Component -- interface `OrderCost` (like `ICoffee`): `getDescription()`, `getTotal()`
-- Concrete component -- the existing `Order` (like `SimpleCoffee`)
-- Base decorator -- abstract `OrderDecorator` (like `CoffeeDecorator`)
-- Concrete decorators -- `GiftWrap` (+15), `ExpressDelivery` (+30),
-  `ScheduledDelivery` (+20, with a date and a time slot -- like the flavor
-  in `SyrupDecorator`)
+**Roles (same as in the Mp3Player / StreamingAudio handout):**
+- Client -- the existing `Customer.pay(Payable, amount)` (like `AudioPlayerClient`)
+- Target -- the existing interface `Payable` (like `AudioSource`)
+- Adaptee -- `QuickPayWallet`, the external SDK (like `StreamingAudio`)
+- Adapter -- `QuickPayAdapter` (like `StreamingToMp3Adapter`)
+
+**What does not fit (what the adapter translates):**
+
+| Our shop (`Payable`)            | QuickPay SDK (`QuickPayWallet`)          |
+|---------------------------------|------------------------------------------|
+| `processPayment(double amount)` | `transfer(String phoneNumber, long amountInTiyin)` |
+| amount as a `double` (127.04)   | whole tiyin as a `long` (12704)          |
+| no phone number                 | needs the customer's phone number        |
+| returns `boolean`               | returns `"OK"` or `"DECLINED"`           |
 
 **What changed:**
-- New package `decorator` with `OrderCost`, `OrderDecorator`, `GiftWrap`,
-  `ExpressDelivery` and `ScheduledDelivery`.
-- `OrderDecorator` IS an `OrderCost` (implements it) and HAS an `OrderCost`
-  (the protected field `wrapped`). By default it passes both calls on to the
-  wrapped object; each concrete decorator first asks the wrapped object, then
-  adds its own price and label on top.
-- `Order` now `implements OrderCost`: it already had `getTotal()`, so only
-  `getDescription()` ("Order ORD-008") was added. Nothing else in `Order`
-  changed, and `Order` knows nothing about the decorators.
-- `RunOrder` -- new section "Decorator: order extras": one order is wrapped
-  in different extras while the program runs, and the customer pays the
-  decorated total with `customer.pay(customer.getBankCard(), ...)`.
+- New package `adapter`:
+  - `QuickPayWallet` -- stands in for the external SDK; treat it as code we
+    are not allowed to edit.
+  - `QuickPayAdapter implements Payable` -- an *object adapter*: it HAS a
+    `QuickPayWallet` (composition) and the phone number. `processPayment()`
+    converts the amount to tiyin, calls `transfer()`, and turns the `String`
+    status into a `boolean`.
+- `RunOrder` -- new section "Adapter: paying with an external wallet": the
+  customer pays the decorated order from Ex1 through `customer.pay(...)`, then
+  a second payment is declined because the wallet has only 500.00.
+- No existing class changed: not `Customer`, not `Payable`, not the SDK.
 
 **Discussion:**
-- Why does `birthdayOrder.place()` not charge the extras? `Order` only knows
-  its own total -- the extras exist only in the wrappers. That is why the
-  decorated total is paid through `customer.pay(...)`.
-- Adding a new extra (for example insurance) = one new class extending
-  `OrderDecorator`; no existing class changes (Open/Closed principle).
-- `new ExpressDelivery(new ScheduledDelivery(...))` compiles. Does it make
-  sense? The pattern allows any combination -- checking which ones are
-  sensible is a business rule, not part of the Decorator.
+- Why can we not just write `Payable byWallet = wallet;`? `QuickPayWallet`
+  does not implement `Payable`, and we are not allowed to change it.
+- Decorator vs Adapter -- both wrap an object. The Decorator keeps the
+  interface (`OrderCost` in, `OrderCost` out) and adds behaviour; the Adapter
+  changes the interface (`QuickPayWallet` in, `Payable` out) and adds nothing.
+- QuickPay pays no cashback, so `Customer.pay` prints no cashback line.
+  (Advanced) If the wallet gave 2% cashback, what would `QuickPayAdapter`
+  have to implement? (`Payable, CashbackEligible` -- a class can implement
+  several interfaces.)
 
 **Run it:** run `RunOrder.main()` -- the end of the output is
 
 ```
-=== Decorator: order extras ===
-Order ORD-008: 92.04
-Order ORD-008 + gift wrap (15.0): 107.04
-Order ORD-008 + gift wrap (15.0) + express delivery (30.0): 137.04
-Order ORD-008 + gift wrap (15.0) + scheduled delivery on 2026-11-14, 10:00-12:00 (20.0): 127.04
-Paid 127.04 by bank card **** 9012. Money left on the card: 1022.96
-Cashback 1.27 added. Bonus points: 11.27
+=== Adapter: paying with an external wallet ===
+  [QuickPay] Transfer of 13704 tiyin from +998 90 123 45 67...
+Paid 137.04 with QuickPay (+998 90 123 45 67).
+  [QuickPay] Transfer of 102014 tiyin from +998 90 123 45 67...
+Payment declined by QuickPay.
 ```

@@ -1,5 +1,7 @@
 package com.seminar2;
 
+import com.seminar2.adapter.QuickPayAdapter;
+import com.seminar2.adapter.QuickPayWallet;
 import com.seminar2.customer.Customer;
 import com.seminar2.customer.ShippingAddress;
 import com.seminar2.decorator.ExpressDelivery;
@@ -282,5 +284,18 @@ public class RunOrder {
         // The customer pays for the order WITH the extras.
         // (birthdayOrder.place() would charge only the plain total - Order does not know about the extras.)
         customer.pay(customer.getBankCard(), wrappedAndScheduled.getTotal());
+
+        out.println();
+        out.println("=== Adapter: paying with an external wallet ===");
+        // The SDK's wallet with 500.00 on it (50 000 tiyin).
+        QuickPayWallet wallet = new QuickPayWallet(50_000);
+        // Payable byWallet = wallet;   // error: QuickPayWallet does not implement Payable
+
+        // The variable type is our interface; the adapter translates every call.
+        Payable byQuickPay = new QuickPayAdapter(wallet, "+998 90 123 45 67");
+
+        // Same client code as for a bank card or bonus points (Seminar 6) - nothing changed in Customer.
+        customer.pay(byQuickPay, wrappedAndExpress.getTotal());   // the decorated order from Ex1
+        customer.pay(byQuickPay, bigOrder.getTotal());            // not enough money in the wallet - declined
     }
 }

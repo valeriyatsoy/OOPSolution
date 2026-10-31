@@ -170,7 +170,8 @@ exactly as it should look at the end of that exercise, plus a
 ```
 seminarTen_ex3            starter: final state of Seminar 10
  |- seminarEleven_ex1         Decorator: GiftWrap, ExpressDelivery, ScheduledDelivery wrap an Order (package decorator)
+     |- seminarEleven_ex2         Adapter: QuickPayAdapter makes an external wallet SDK usable as a Payable (package adapter)
 ```
 
-To see one exercise's solution: `git checkout seminarEleven_ex1`.
-To see exactly what an exercise added: `git diff seminarTen_ex3..seminarEleven_ex1`.
+To see one exercise's solution: `git checkout seminarEleven_ex2`.
+To see exactly what an exercise added: `git diff seminarEleven_ex1..seminarEleven_ex2`.
