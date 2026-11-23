@@ -77,6 +77,16 @@ public class Order implements OrderCost, OrderObservable {
         items.add(new OrderItem(product, quantity));
     }
 
+    // Removes the last order line with this product (nothing happens if it is not in the order).
+    public void removeItem(Product product) {
+        for (int i = items.size() - 1; i >= 0; i--) {
+            if (items.get(i).getProduct() == product) {
+                items.remove(i);
+                return;
+            }
+        }
+    }
+
     public double getItemsTotal() {
         double total = 0;
         for (OrderItem item : items) {

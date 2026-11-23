@@ -188,6 +188,8 @@ project exactly as it should look at the end of that exercise, plus a
 ```
 seminarEleven_ex2         starter: final state of Seminar 11
  |- seminarTwelve_ex1         Observer: notification channels subscribe to an Order's status (OrderObservable, enum OrderStatus, package observer)
+     |- seminarTwelve_ex2         Command: OrderConsole (Scanner) runs order commands through an OrderMenu (package command)
 ```
 
-To see one exercise's solution: `git checkout seminarTwelve_ex1`.
+To see one exercise's solution: `git checkout seminarTwelve_ex2`.
+To see exactly what an exercise added: `git diff seminarTwelve_ex1..seminarTwelve_ex2`.
