@@ -5,6 +5,8 @@ import com.seminar2.exception.InsufficientBalanceException;
 import com.seminar2.product.Product;
 
 import com.seminar2.decorator.OrderCost;
+import com.seminar2.observer.OrderObservable;
+import com.seminar2.observer.OrderObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +14,18 @@ import java.util.List;
 // Decorator (Seminar 11): Order is the CONCRETE COMPONENT - the plain object that
 // the extras (GiftWrap, ExpressDelivery, ScheduledDelivery) wrap.
 // Order itself knows nothing about them.
-public class Order implements OrderCost {
+// Observer (Seminar 12): Order is also the SUBJECT - it notifies its observers
+// every time its status changes.
+public class Order implements OrderCost, OrderObservable {
 
     private String orderId;
     // Aggregation: the customer exists before and after the order.
     private Customer customer;
     // Composition: the order creates its own OrderItem objects and owns them.
     private List<OrderItem> items = new ArrayList<>();
+    private OrderStatus status = OrderStatus.NEW;
+    // Observer: the subscribers. The element type is the interface.
+    private List<OrderObserver> observers = new ArrayList<>();
 
     public Order(String orderId, Customer customer) {
         this.orderId = orderId;
@@ -31,6 +38,33 @@ public class Order implements OrderCost {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    @Override
+    public void addObserver(OrderObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(OrderObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (OrderObserver observer : observers) {
+            observer.onStatusChanged(this, status);
+        }
+    }
+
+    // Every status change is announced to all observers.
+    public void setStatus(OrderStatus newStatus) {
+        status = newStatus;
+        notifyObservers();
     }
 
     public void addItem(Product product, int quantity) {
@@ -80,6 +114,7 @@ public class Order implements OrderCost {
         }
         customer.setAccountBalance(customer.getAccountBalance() - total);
         System.out.println("Order " + orderId + " placed. " + total + " was charged.");
+        setStatus(OrderStatus.PLACED);      // observers are notified
     }
 
     public void printSummary() {

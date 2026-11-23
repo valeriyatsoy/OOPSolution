@@ -175,3 +175,19 @@ seminarTen_ex3            starter: final state of Seminar 10
 
 To see one exercise's solution: `git checkout seminarEleven_ex2`.
 To see exactly what an exercise added: `git diff seminarEleven_ex1..seminarEleven_ex2`.
+
+---
+
+# Seminar 12 -- Behavioural Design Patterns: Observer and Command (companion project)
+
+Seminar 12 continues in this same project: the starter is the final Seminar 11
+state (`seminarEleven_ex2`). Each exercise has its own branch holding the
+project exactly as it should look at the end of that exercise, plus a
+`docs/EXERCISE_NOTES.md`.
+
+```
+seminarEleven_ex2         starter: final state of Seminar 11
+ |- seminarTwelve_ex1         Observer: notification channels subscribe to an Order's status (OrderObservable, enum OrderStatus, package observer)
+```
+
+To see one exercise's solution: `git checkout seminarTwelve_ex1`.

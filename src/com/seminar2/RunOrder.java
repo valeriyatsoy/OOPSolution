@@ -18,6 +18,7 @@ import com.seminar2.notification.WebChannel;
 import com.seminar2.notification.WebNotification;
 import com.seminar2.order.Order;
 import com.seminar2.order.OrderNumberGenerator;
+import com.seminar2.order.OrderStatus;
 import com.seminar2.payment.Payable;
 import com.seminar2.product.Clothing;
 import com.seminar2.product.DigitalProduct;
@@ -297,5 +298,25 @@ public class RunOrder {
         // Same client code as for a bank card or bonus points (Seminar 6) - nothing changed in Customer.
         customer.pay(byQuickPay, wrappedAndExpress.getTotal());   // the decorated order from Ex1
         customer.pay(byQuickPay, bigOrder.getTotal());            // not enough money in the wallet - declined
+    
+        out.println();
+        out.println("=== Observer: order status updates ===");
+        Order trackedOrder = new Order(generator1.nextOrderId(), customer);
+        trackedOrder.addItem(jacket, 1);
+
+        // The channels from Seminar 10 subscribe to the order.
+        NotificationChannel phone = new MobileChannel("iPhone 15");
+        NotificationChannel sms = new SmsChannel("+998 90 123 45 67");
+        trackedOrder.addObserver(phone);
+        trackedOrder.addObserver(sms);
+
+        try {
+            trackedOrder.place();                          // status -> PLACED
+        } catch (InsufficientBalanceException e) {
+            out.println("Order was not placed: " + e.getMessage());
+        }
+        trackedOrder.setStatus(OrderStatus.SHIPPED);
+        trackedOrder.removeObserver(sms);                  // the customer turns SMS off
+        trackedOrder.setStatus(OrderStatus.DELIVERED);     // push notification only
     }
 }
